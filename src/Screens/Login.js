@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Image } from 'react-native';
 import  { Container, Content, Grid, Row, Form, Input, Button, Text,  Item, Label }  from 'native-base';
 
-class Login extends Component {
+export default class Login extends Component {
   render() {
     return (
       <Container>
@@ -37,5 +37,3 @@ class Login extends Component {
     );
   }
 }
-
-export default Login; 
