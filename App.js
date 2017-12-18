@@ -1,15 +1,8 @@
-import React, { Component } from 'react';
-import { Container, Content, Text, StyleProvider } from 'native-base';
-import getTheme from './native-base-theme/components';
-import platform from './native-base-theme/variables/commonColor';
-import { Login } from '.src/Components/Login.js'
+import React from "react";
+import { Setup } from "./src/Setup/setup.js";
 
-export default class App extends Component {
+export default class App extends React.Component {
   render() {
-    return (
-      <StyleProvider style={getTheme(commonColor)}>
-        <Login />
-      </StyleProvider>
-    );
+    return <Setup />;
   }
 }

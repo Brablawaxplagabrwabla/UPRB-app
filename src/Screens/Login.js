@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Container, Content, Grid, Row, Form, Input, Button, Text } from 'native-base';
-import getTheme from './native-base-theme/components';
-import platform from './native-base-theme/variables/platform';
+import { Image } from 'react-native';
+import  { Container, Content, Grid, Row, Form, Input, Button, Text,  Item, Label }  from 'native-base';
 
-export default class Login extends Component {
+class Login extends Component {
   render() {
     return (
       <Container>
@@ -38,3 +37,5 @@ export default class Login extends Component {
     );
   }
 }
+
+export default Login; 
