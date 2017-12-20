@@ -1,6 +1,8 @@
 import React from 'react';
 import { Image } from 'react-native';
-import { Container, Content, Grid, Row, Text, Spinner } from 'native-base';
+import { Container, Content, Text, Spinner } from 'native-base';
+import { Grid, Row, Col } from 'react-native-easy-grid';
+
 export default class cargando extends React.Component {
   constructor(props){
     super(props);
@@ -11,7 +13,7 @@ export default class cargando extends React.Component {
 				<Content>
 					<Grid>
 						<Row>
-							<Image source={{uri:''}} />
+							<Image source={{uri:'https://firebasestorage.googleapis.com/v0/b/uprb-app.appspot.com/o/ico_uprb.svg?alt=media&token=079b52f0-93c2-4f3e-b37c-a582227cd60c'}} />
 						</Row>
 						<Row>
 							<Spinner />

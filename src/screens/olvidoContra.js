@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image } from  'react-native';
-import { Container, Content, Grid, Row, Text, Button, Input, Form, Label } from 'native-base';
+import { Container, Content, Text, Button, Input, Form, Label } from 'native-base';
+import { Grid, Row, Col } from 'react-native-easy-grid';
 
 export default class olvidoContra extends React.Component {
   constructor (props) {

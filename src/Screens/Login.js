@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image } from 'react-native';
-import { Container, Content, Grid, Row, Form, Item, Label, Input, Text, Button } from 'native-base';
+import { Container, Content, Form, Item, Label, Input, Text, Button } from 'native-base';
+import { Grid, Row, Col } from 'react-native-easy-grid';
 
 export default class login extends React.Component {
 	constructor (props) {
