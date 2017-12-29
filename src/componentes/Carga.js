@@ -3,12 +3,12 @@ import firebase from 'firebase';
 import {
 	Image,
 	View,
-	Platform,
-	StatusBar,
 	Text
 } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 import { Bar } from 'react-native-progress';
 import Logo from '../assets/ico_uprb.png';
+import { Contenedor } from './reusables/';
 
 class Carga extends Component {
 	state = { textoCarga: 'Cargando Datos', progreso: 0 }
@@ -23,10 +23,12 @@ class Carga extends Component {
 			messagingSenderId: '38894349785'
 		};
 		this.setState({ textoCarga: 'Conectando' });
-		await this.esperaEstetica(500);
+		await this.esperaEstetica(1000);
 		firebase.initializeApp(config);
 		this.setState({ textoCarga: 'Cargando Iconos' });
 		let num = 0;
+		// Comenta toda esta sección de código para evitar la carga de íconos,
+		// es lenta y consume datos del realtime database
 		await firebase.database().ref('/Metadata/-L1HijQzbBIPxBLJlcxf/datos/numero/')
 			.once('value')
 			.then((snapshot) => {
@@ -34,17 +36,23 @@ class Carga extends Component {
 			});
 		const ref = '/Metadata/-L1HijQzbBIPxBLJlcxf/datos/iconos/';
 		for (let i = 1; i <= num; i++) {
+			this.setState({ progreso: i / num });
 			await firebase.database().ref(ref + i)
 				.once('value')
 				.then((snapshot) => {
 					const dato = snapshot.val();
 					this.setState({ [dato.nombre]: dato.imagen });
-					this.setState({ progreso: i / num });
 				});
 		}
-		this.setState({ textoCarga: 'Listo' });
+		// Fin de la sección a comentar
+		this.setState({ textoCarga: 'Ya Casi' });
 		await this.esperaEstetica(800);
-		this.props.navigation.navigate('Login', { ...this.state });
+		this.props.navigation.dispatch(NavigationActions.reset({
+			index: 0,
+			actions: [
+				NavigationActions.navigate({ routeName: 'Login', params: { ...this.state } })
+			],
+		}));
 	}
 
 	esperaEstetica(ms) {
@@ -53,7 +61,7 @@ class Carga extends Component {
 
 	render() {
 		return (
-			<View style={estilos.vistaPrincipal}>
+			<Contenedor>
 				<View style={estilos.contenedorImagen}>
 					<Image style={estilos.imagen} source={Logo} />
 				</View>
@@ -69,20 +77,12 @@ class Carga extends Component {
 						<Text style={estilos.textoCarga}>{this.state.textoCarga}</Text>
 					</View>
 				</View>
-			</View>
+			</Contenedor>
 		);
 	}
 }
 
 const estilos = {
-	vistaPrincipal: {
-		backgroundColor: '#fff',
-		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center',
-		flexDirection: 'column',
-		marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 20
-	},
 	contenedorImagen: {
 		flex: 2,
 		justifyContent: 'flex-end',

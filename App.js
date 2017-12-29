@@ -1,9 +1,9 @@
 import React from 'react';
-import router from './router';
+import Router from './Router';
 
 class App extends React.Component {
   render() {
-    return <router />;
+    return <Router />;
   }
 }
 
