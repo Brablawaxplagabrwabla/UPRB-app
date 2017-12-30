@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { NavigationActions } from 'react-navigation';
 import {
 	Image,
 	View,
@@ -40,7 +41,12 @@ class Login extends Component {
 	loginExitoso() {
 		this.setState({ cargando: false });
 		console.log('Login exitoso');
-		// Navegación aquí
+		this.props.navigation.dispatch(NavigationActions.reset({
+			index: 0,
+			actions: [
+				NavigationActions.navigate({ routeName: 'Home', params: { ...this.state } })
+			],
+		}));
 	}
 
 	loginFallo() {

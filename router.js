@@ -4,6 +4,7 @@ import Carga from './src/componentes/Carga';
 import Login from './src/componentes/Login';
 import Olvido1 from './src/componentes/Olvido1';
 import Olvido2 from './src/componentes/Olvido2';
+import Home from './src/componentes/Home';
 
 class Router extends Component {
     render() {
@@ -32,6 +33,12 @@ const NavegadorLogin = StackNavigator({
   },
   Olvido2: {
     screen: Olvido2,
+    navigationOptions: {
+      header: null
+    }
+  },
+  Home: {
+    screen: Home,
     navigationOptions: {
       header: null
     }
