@@ -5,8 +5,11 @@ import {
 	TouchableOpacity,
 	Text
 } from 'react-native';
+import { NavigationActions } from 'react-navigation';
+import { connect } from 'react-redux';
 import firebase from 'firebase';
 import { Contenedor, Input, Boton, Spinner } from './reusables/';
+import * as actions from '../acciones';
 // import Logo from '../assets/ico_uprb.png';
 // Quita el comentario en este import y coloca {Logo} dentro del Image para ver el ícono
 
@@ -33,14 +36,22 @@ class Login extends Component {
 		this.setState({ cargando: true });
 		this.setState({ error: '' });
 		firebase.auth().signInWithEmailAndPassword(email.toLowerCase() + append, contrasena)
-			.then(this.loginExitoso.bind(this))
+			.then((user) => this.loginExitoso(user))
 			.catch(this.loginFallo.bind(this));
 	}
 
-	loginExitoso() {
+	loginExitoso(user) {
 		this.setState({ cargando: false });
-		console.log('Login exitoso');
-		// Navegación aquí
+		this.props.enviarDatos({ iconos: this.props.navigation.state.params, user });
+		this.props.navigation.dispatch(NavigationActions.reset({
+			index: 0,
+			actions: [
+				NavigationActions.navigate({ routeName: 'Main' })
+			],
+		}));
+		/*this.props.navigation.navigate('Departamentos', {
+			iconos: this.props.navigation.state.params
+		});*/
 	}
 
 	loginFallo() {
@@ -128,4 +139,4 @@ const estilos = {
 	}
 };
 
-export default Login;
+export default connect(null, actions)(Login);

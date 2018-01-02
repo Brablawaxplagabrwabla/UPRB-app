@@ -42,7 +42,8 @@ class Carga extends Component {
 				.then((snapshot) => {
 					const dato = snapshot.val();
 					this.setState({ [dato.nombre]: dato.imagen });
-				});
+				})
+				.catch((error) => console.log(error));
 		}
 		// Fin de la sección a comentar
 		this.setState({ textoCarga: 'Ya Casi' });
