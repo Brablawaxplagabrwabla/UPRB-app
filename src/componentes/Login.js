@@ -31,7 +31,7 @@ class Login extends Component {
 
 	inicioSesion() {
 		const { email, contrasena } = this.state;
-		const append = '@prueba.com'; // Auth no permite autenticación si no es un email válido
+		const append = '@uprb.pr'; // Auth no permite autenticación si no es un email válido
 
 		this.setState({ cargando: true });
 		this.setState({ error: '' });
