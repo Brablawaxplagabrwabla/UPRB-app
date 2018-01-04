@@ -29,7 +29,7 @@ class Carga extends Component {
 		let num = 0;
 		// Comenta toda esta sección de código para evitar la carga de íconos,
 		// es lenta y consume datos del realtime database
-		await firebase.database().ref('/Metadata/-L1HijQzbBIPxBLJlcxf/datos/numero/')
+		await firebase.database().ref('/Metadata/datos/numero/')
 			.once('value')
 			.then((snapshot) => {
 				num = snapshot.val();
