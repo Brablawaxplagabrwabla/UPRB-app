@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, Keyboard } from 'react-native';
 import firebase from 'firebase';
 import { Contenedor, Input, Boton, Spinner } from './reusables/';
 // import Logo from '../assets/ico_uprb.png';
@@ -43,9 +43,9 @@ class Olvido2 extends Component {
 					firebase.database().ref(`/Usuarios/${user.uid}`)
 						.update(datos)
 						.then(async() => {
-							console.log('Should be going back');
+							Keyboard.dismiss;
 							this.props.navigation.goBack(null);
-							await this.esperaEstetica(2000);
+							await this.esperaEstetica(350);
 							this.props.navigation.goBack(null);
 						})
 						.catch((error) => console.log(error));

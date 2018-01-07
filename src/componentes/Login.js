@@ -9,7 +9,7 @@ import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import firebase from 'firebase';
 import { Contenedor, Input, Boton, Spinner } from './reusables/';
-import * as actions from '../acciones';
+import { enviarDatos } from '../acciones';
 // import Logo from '../assets/ico_uprb.png';
 // Quita el comentario en este import y coloca {Logo} dentro del Image para ver el ícono
 
@@ -49,9 +49,6 @@ class Login extends Component {
 				NavigationActions.navigate({ routeName: 'Main' })
 			],
 		}));
-		/*this.props.navigation.navigate('Departamentos', {
-			iconos: this.props.navigation.state.params
-		});*/
 	}
 
 	loginFallo() {
@@ -139,4 +136,4 @@ const estilos = {
 	}
 };
 
-export default connect(null, actions)(Login);
+export default connect(null, { enviarDatos })(Login);

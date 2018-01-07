@@ -44,7 +44,7 @@ class Olvido1 extends Component {
 	}
 
 	login(ID, password) {
-		const append = '@prueba.com';
+		const append = '@uprb.pr';
 		firebase.auth().signInWithEmailAndPassword(ID + append, password)
 			.then((user) => {
 				this.setState({ cargando: false, error: '', email: '' });

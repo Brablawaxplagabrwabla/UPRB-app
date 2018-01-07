@@ -38,7 +38,11 @@ class Departamentos extends Component {
 					data={this.prepararDatos()}
 					keyExtractor={(item) => item.nombre}
 					renderItem={({ item }) => 
-					<Departamento icono={item.icono} titulo={item.nombre} onPress={() => this.onClick(item)} />}
+					<Departamento
+						icono={item.icono}
+						titulo={item.nombre}
+						onPress={() => this.onClick(item)} 
+					/>}
 				/>
 			);
 		}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, Platform, StatusBar } from 'react-native';
+import { Image, Platform, StatusBar, View } from 'react-native';
 import { StackNavigator, TabNavigator } from 'react-navigation';
 import Carga from './src/componentes/Carga';
 import Login from './src/componentes/Login';
@@ -9,6 +9,8 @@ import Departamentos from './src/componentes/Departamentos';
 import ImagenHome from './src/assets/ico_home.png';
 import ImagenClases from './src/assets/ico_clases.png';
 import ImagenAusencias from './src/assets/ico_ausencias.png';
+import ListaEstatus from './src/componentes/ListaEstatus';
+import IndicarEstatus from './src/componentes/IndicarEstatus';
 
 class Router extends Component {
     render() {
@@ -57,8 +59,28 @@ const Navegador = StackNavigator({
     screen: TabNavigator({
       Clases: {
         screen: StackNavigator({
-          Temporal1: {
-            screen: Departamentos
+          ListaEstatus: {
+            screen: ListaEstatus
+          },
+          IndicarEstatus: {
+            screen: IndicarEstatus,
+            navigationOptions: {
+              headerTitle: 'Detalles',
+              headerTintColor: '#rgb(137, 174, 214)',
+              headerTitleStyle: {
+                fontSize: 18,
+                fontFamily: 'Roboto',
+                fontWeight: '400',
+                color: '#rgb(154, 157, 159)',
+                alignSelf: 'center'
+              },
+              headerStyle: {
+                marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 20,
+                backgroundColor: '#rgb(247, 247, 247)',
+                marginBottom: 8
+              },
+              headerRight: <View />
+            }
           }
         }),
         navigationOptions: {
@@ -86,7 +108,8 @@ const Navegador = StackNavigator({
               },
               headerStyle: {
                 marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 20,
-                backgroundColor: '#rgb(247, 247, 247)'
+                backgroundColor: '#rgb(247, 247, 247)',
+                marginBottom: 8
               }
             }
           }
@@ -103,7 +126,7 @@ const Navegador = StackNavigator({
       },
       Ausencias: {
         screen: StackNavigator({
-          Temporal2: {
+          Temporal: {
             screen: Departamentos
           }
         }),
