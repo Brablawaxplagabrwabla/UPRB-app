@@ -56,19 +56,40 @@ class IndicarEstatus extends Component {
 	}
 
 	fecha() {
-		// Hay que alterar el estado para formatear los datos a renderizar
 		const { seccion } = this.props.navigation.state.params;
-		if (seccion.dias.length > 3) {
 
-		} else {
-			const fechaClase = moment().isoWeekday(this.auxiliarDias(seccion.dias))
+		if (seccion.dias.length > 3) {
+			const diaUno = seccion.dias.substring(0, 3);
+			const diaDos = seccion.dias.substring(4);
+
+			const fechaUno = moment()
+			.isoWeekday(this.auxiliarDias(diaUno))
 			.format('YYYY-MM-DD') + ' ' + seccion.hora;
-			if (moment(fechaClase).isBefore(moment())) {
-				const fecha = moment().isoWeekday(this.auxiliarDias(seccion.dias)).add(7, 'day');
+
+			const fechaDos = moment()
+			.isoWeekday(this.auxiliarDias(diaDos))
+			.format('YYYY-MM-DD') + ' ' + seccion.hora;
+
+			if (moment(fechaUno).isBefore(moment())) {
+				if (moment(fechaDos).isBefore(moment())) {
+					const fecha = moment().isoWeekday(this.auxiliarDias(diaUno)).add(7, 'day');
+					return fecha.format('DD [de] MMMM YYYY');
+				}
+				const fecha = moment().isoWeekday(this.auxiliarDias(diaDos));
 				return fecha.format('DD [de] MMMM YYYY');
 			}
-			return moment(fechaClase).format('DD [de] MMMM YYYY');
+			const fecha = moment().isoWeekday(this.auxiliarDias(diaUno));
+			return fecha.format('DD [de] MMMM YYYY');
 		}
+
+		const fechaClase = moment().isoWeekday(this.auxiliarDias(seccion.dias))
+		.format('YYYY-MM-DD') + ' ' + seccion.hora;
+
+		if (moment(fechaClase).isBefore(moment())) {
+			const fecha = moment().isoWeekday(this.auxiliarDias(seccion.dias)).add(7, 'day');
+			return fecha.format('DD [de] MMMM YYYY');
+		}
+		return moment(fechaClase).format('DD [de] MMMM YYYY');
 	}
 
 	render() {
@@ -152,7 +173,7 @@ const estilos = {
 	textoPrincipal: {
 		fontFamily: 'Roboto',
 		color: '#rgb(159, 162, 164)',
-		fontSize: 18,
+		fontSize: 19,
 		paddingBottom: 7
 	},
 	textoIcono: {
