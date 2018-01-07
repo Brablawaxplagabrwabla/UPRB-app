@@ -154,7 +154,7 @@ const estilos = {
 		justifyContent: 'center'
 	},
 	contenedorTextoPrincipal: {
-		paddingLeft: 70
+		paddingLeft: 60
 	},
 	contenedorCuadrados: {
 		flexDirection: 'row',
