@@ -11,6 +11,8 @@ import ImagenClases from './src/assets/ico_clases.png';
 import ImagenAusencias from './src/assets/ico_ausencias.png';
 import ListaEstatus from './src/componentes/ListaEstatus';
 import IndicarEstatus from './src/componentes/IndicarEstatus';
+import Clases from './src/componentes/Clases';
+import Secciones from './src/componentes/Secciones';
 
 class Router extends Component {
     render() {
@@ -99,6 +101,42 @@ const Navegador = StackNavigator({
             screen: Departamentos,
             navigationOptions: {
               headerTitle: 'Departamentos',
+              headerTitleStyle: {
+                fontSize: 18,
+                fontFamily: 'Roboto',
+                fontWeight: '400',
+                color: '#rgb(154, 157, 159)',
+                alignSelf: 'center'
+              },
+              headerStyle: {
+                marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 20,
+                backgroundColor: '#rgb(247, 247, 247)',
+                marginBottom: 8
+              }
+            }
+          },
+          Clases: {
+            screen: Clases,
+            navigationOptions: {
+              headerTitle: 'Clases',
+              headerTitleStyle: {
+                fontSize: 18,
+                fontFamily: 'Roboto',
+                fontWeight: '400',
+                color: '#rgb(154, 157, 159)',
+                alignSelf: 'center'
+              },
+              headerStyle: {
+                marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 20,
+                backgroundColor: '#rgb(247, 247, 247)',
+                marginBottom: 8
+              }
+            }
+          },
+          Secciones: {
+            screen: Secciones,
+            navigationOptions: {
+              headerTitle: 'Clases',
               headerTitleStyle: {
                 fontSize: 18,
                 fontFamily: 'Roboto',

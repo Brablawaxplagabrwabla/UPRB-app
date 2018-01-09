@@ -3,24 +3,33 @@ import firebase from 'firebase';
 import _ from 'lodash';
 import { FlatList, View } from 'react-native';
 import { connect } from 'react-redux';
-
-import Departamento from './Departamento';
+import Clase from './Clase';
 import { Spinner } from './reusables/';
 
-class Departamentos extends Component {
+class Clases extends Component {
 	state = { cargando: true, snapshot: {} }
+
 	componentWillMount() {
-		firebase.database().ref('/Departamentos')
-			.on('value', (snapshot) => {
-				this.setState({ cargando: false, snapshot: snapshot.val() });
+		firebase.database().ref(`/Departamentos/${this.props.navigation.params.nombre}`)
+			.on('value', dept => {
+				const clases = dept.val().clases;
+				let data = [];
+				_.map(clases, codigo => {
+					firebase.database().ref(`/Clases/${codigo}`).on('value', snapshot => {
+						const clase = snapshot.val();
+						clase.codigo = codigo;
+						data.push(clase);
+					});
+				});
+				this.setState({ cargando: false, snapshot: data });
 			});
 	}
 
 	prepararDatos() {
 		const datos = _.map(this.state.snapshot, (o) => {
 			return {
-				nombre: o.nombre,
-				icono: this.props.datos.data.iconos[o.icono]
+				nombre: o.nombre, 
+				codigo: o.codigo
 			};
 		});
 		return datos;
@@ -31,14 +40,14 @@ class Departamentos extends Component {
 		if (!this.state.cargando) {
 			return (
 				<FlatList
-					numColumns={2}
+					numColumns={1}
 					data={this.prepararDatos()}
 					keyExtractor={(item) => item.nombre}
 					renderItem={({ item }) => 
-					<Departamento
-						icono={item.icono}
-						titulo={item.nombre}
-						onPress={() => navigate('Clases', { nombre: this.props.nombre })} 
+					<Clase 
+						nombre={item.icono} 
+						codigo={item.nombre} 
+						onPress={() => navigate('Secciones', { codigo: this.props.codigo })} 
 					/>}
 				/>
 			);
@@ -55,8 +64,8 @@ class Departamentos extends Component {
 	}
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
 	return { datos: state };
 };
 
-export default connect(mapStateToProps)(Departamentos);
+export default connect(mapStateToProps)(Clases);
