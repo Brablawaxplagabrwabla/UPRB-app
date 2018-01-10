@@ -35,11 +35,15 @@ class Secciones extends Component {
     // El tema del Modal
   }
 
-  estaSuscrito() {
-    const user = firebase.auth().currentUser;
-    firebase.database().ref(`/Clases/${user.uid}`).on('value', snapshot => {
-      // Macari y Igafiola no me dejaron trabajar jajajajaj 
-    });
+  estaSuscrito(seccion) {
+		const user = firebase.auth().currentUser;
+		let estaSuscrito = false;
+    firebase.database().ref(`/Clases/${user.uid}/datos/secciones`).on('value', snapshot => {
+			const seccionesUser = snapshot.val();
+			const i = _.findIndex(seccionesUser, (o) => o.seccion === seccion);
+			if (i) { estaSuscrito = true; }
+		});
+		return estaSuscrito;
   }
 
 	prepararDatos() {
@@ -49,7 +53,6 @@ class Secciones extends Component {
         profesor: o.profesor.nombre,
         hora: o.horario.hora,
         dias: o.horario.dias
-				
 			};
 		});
 		return datos;
@@ -59,13 +62,16 @@ class Secciones extends Component {
 		if (!this.state.cargando) {
 			return (
 				<FlatList
-					numColumns={2}
+					numColumns={1}
 					data={this.prepararDatos()}
-					keyExtractor={(item) => item.nombre}
+					keyExtractor={(item) => item.seccion}
 					renderItem={({ item }) => 
 					<Seccion
-						icono={item.icono}
-						titulo={item.nombre}
+						seccion={item.seccion}
+						profesor={item.profesor}
+						hora={item.hora}
+						dias={item.dias}
+						estaSuscrito={this.estaSuscrito(item.seccion)}
 						onPress={() => this.onClick(item)} 
 					/>}
 				/>

@@ -70,10 +70,10 @@ class Seccion extends React.Component {
             <Text style={styles.column}>{this.props.dias}</Text>
           </View>
           <View style={styles.column}>
-            {this.resolverSuscripcion()}
+            {this.resolverSuscripcion(this.props.estaSuscrito)}
           </View>
           <View style={styles.column}>
-            {this.resolverStatus(this.props.suscribirse)}
+            {this.resolverStatus(this.props.status)}
           </View>
         </View>
       </TouchableWithoutFeedback>
