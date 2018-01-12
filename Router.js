@@ -59,7 +59,7 @@ const Navegador = StackNavigator({
   },
   Main: {
     screen: TabNavigator({
-      Clases: {
+      Estatus: {
         screen: StackNavigator({
           ListaEstatus: {
             screen: ListaEstatus
@@ -130,7 +130,8 @@ const Navegador = StackNavigator({
                 marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 20,
                 backgroundColor: '#rgb(247, 247, 247)',
                 marginBottom: 8
-              }
+              },
+              headerRight: <View />
             }
           },
           Secciones: {

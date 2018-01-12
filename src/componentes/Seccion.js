@@ -1,5 +1,10 @@
 import React from 'react';
-import { View, Text, TouchableWithoutFeedback, Image, TouchableOpacity } from 'react-native';
+import { View,
+  Text,
+  TouchableWithoutFeedback,
+  Image,
+  TouchableOpacity
+} from 'react-native';
 
 class Seccion extends React.Component {
   

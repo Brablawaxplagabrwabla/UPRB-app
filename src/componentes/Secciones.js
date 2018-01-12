@@ -8,51 +8,51 @@ import Seccion from './Seccion';
 import { Spinner } from './reusables/';
 
 class Secciones extends Component {
-  state = { cargando: true, snapshot: {} }
+	state = { cargando: true, snapshot: {} }
   
 	componentWillMount() {
-    const { navigation } = this.props.navigation.params;
+		const { navigation } = this.props.navigation.params;
 		firebase.database().ref(`/Clases/${navigation.codigo}`)
 			.on('value', snapshotClases => {
-        const secciones = snapshotClases.val().secciones;
-        let data = [];
-        _.map(secciones, codigoSec => {
-          firebase.database().ref(`/Secciones/${codigoSec}`).on('value', snapshotSec => {
-            let seccion = snapshotSec.val();
-            firebase.database.ref(`/Usuarios/${seccion.profesor}`).on('value', snapshot => {
-              let profesor = snapshot.val();
-              seccion.profesor = profesor;
-            });
-            seccion.seccion = codigoSec;
-            data.push(seccion);
-          });
-        });
-        this.setState({ cargando: false, snapshot: data });
-      });
+		const secciones = snapshotClases.val().secciones;
+		const data = [];
+		_.map(secciones, codigoSec => {
+				firebase.database().ref(`/Secciones/${codigoSec}`).on('value', snapshotSec => {
+					const seccion = snapshotSec.val();
+					firebase.database.ref(`/Usuarios/${seccion.profesor}`).on('value', snapshot => {
+						const profesor = snapshot.val();
+						seccion.profesor = profesor;
+					});
+					seccion.seccion = codigoSec;
+					data.push(seccion);
+				});
+			});
+			this.setState({ cargando: false, snapshot: data });
+		});
 	}
 
 	suscribirse() {
-    // El tema del Modal
-  }
+		// El tema del Modal
+	}
 
-  estaSuscrito(seccion) {
+	estaSuscrito(seccion) {
 		const user = firebase.auth().currentUser;
 		let estaSuscrito = false;
-    firebase.database().ref(`/Clases/${user.uid}/datos/secciones`).on('value', snapshot => {
+		firebase.database().ref(`/Clases/${user.uid}/datos/secciones`).on('value', snapshot => {
 			const seccionesUser = snapshot.val();
 			const i = _.findIndex(seccionesUser, (o) => o.seccion === seccion);
 			if (i) { estaSuscrito = true; }
 		});
 		return estaSuscrito;
-  }
+	}
 
 	prepararDatos() {
 		const datos = _.map(this.state.snapshot, (o) => {
 			return {
-        seccion: o.seccion,
-        profesor: o.profesor.nombre,
-        hora: o.horario.hora,
-        dias: o.horario.dias
+				seccion: o.seccion,
+				profesor: o.profesor.nombre,
+				hora: o.horario.hora,
+				dias: o.horario.dias
 			};
 		});
 		return datos;

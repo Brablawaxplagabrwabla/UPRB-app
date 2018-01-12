@@ -9,18 +9,20 @@ import { Spinner } from './reusables/';
 class Clases extends Component {
 	state = { cargando: true, snapshot: {} }
 
-	componentWillMount() {
-		firebase.database().ref(`/Departamentos/${this.props.navigation.params.nombre}`)
-			.on('value', dept => {
+	componentDidMount() {
+		const { nombre } = this.props.navigation.state.params;
+		firebase.database().ref(`/Departamentos/${nombre}`)
+			.on('value', async (dept) => {
 				const clases = dept.val().clases;
-				let data = [];
-				_.map(clases, codigo => {
-					firebase.database().ref(`/Clases/${codigo}`).on('value', snapshot => {
+				const data = [];
+				for (let i = 0; i < clases.length; i++) {
+					await firebase.database().ref(`/Clases/${clases[i]}`).once('value')
+					.then((snapshot) => {
 						const clase = snapshot.val();
-						clase.codigo = codigo;
+						clase.codigo = clases[i];
 						data.push(clase);
 					});
-				});
+				}
 				this.setState({ cargando: false, snapshot: data });
 			});
 	}
@@ -45,8 +47,8 @@ class Clases extends Component {
 					keyExtractor={(item) => item.nombre}
 					renderItem={({ item }) => 
 					<Clase 
-						nombre={item.icono} 
-						codigo={item.nombre} 
+						nombre={item.nombre} 
+						codigo={item.codigo} 
 						onPress={() => navigate('Secciones', { codigo: this.props.codigo })} 
 					/>}
 				/>

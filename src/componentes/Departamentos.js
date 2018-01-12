@@ -3,7 +3,6 @@ import firebase from 'firebase';
 import _ from 'lodash';
 import { FlatList, View } from 'react-native';
 import { connect } from 'react-redux';
-
 import Departamento from './Departamento';
 import { Spinner } from './reusables/';
 
@@ -26,8 +25,18 @@ class Departamentos extends Component {
 		return datos;
 	}
 
+	click(departamento) {
+		const keys = Object.keys(this.state.snapshot);
+		let i = 0;
+		_.forEach(this.state.snapshot, (o) => {
+			if (o.nombre === departamento.nombre) {
+				this.props.navigation.navigate('Clases', { nombre: keys[i] });
+			}
+			i++;
+		});
+	}
+
 	generadorLista() {
-		const { navigate } = this.props.navigation;
 		if (!this.state.cargando) {
 			return (
 				<FlatList
@@ -38,7 +47,7 @@ class Departamentos extends Component {
 					<Departamento
 						icono={item.icono}
 						titulo={item.nombre}
-						onPress={() => navigate('Clases', { nombre: this.props.nombre })} 
+						onPress={() => this.click(item)} 
 					/>}
 				/>
 			);
