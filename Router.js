@@ -13,6 +13,8 @@ import ListaEstatus from './src/componentes/ListaEstatus';
 import IndicarEstatus from './src/componentes/IndicarEstatus';
 import Clases from './src/componentes/Clases';
 import Secciones from './src/componentes/Secciones';
+import Ausencias from './src/componentes/Ausencias';
+import DetallesAusencias from './src/componentes/DetallesAusencias';
 
 class Router extends Component {
     render() {
@@ -165,8 +167,11 @@ const Navegador = StackNavigator({
       },
       Ausencias: {
         screen: StackNavigator({
-          Temporal: {
-            screen: Departamentos
+          Ausencias: {
+            screen: Ausencias
+          },
+          DetallesAusencias: {
+            screen: DetallesAusencias
           }
         }),
         navigationOptions: {
