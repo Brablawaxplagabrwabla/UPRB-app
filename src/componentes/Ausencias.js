@@ -20,7 +20,7 @@ class Ausencias extends Component {
 
 	buscarSecciones(user) {
 		firebase.database().ref(`/Usuarios/${user.uid}`).on('value', snapshot => { 
-			const usuario = snapshot.val();
+			let usuario = snapshot.val();
 			return usuario.secciones; 
 		});
 	}

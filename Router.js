@@ -153,6 +153,7 @@ const Navegador = StackNavigator({
                 marginBottom: 8
               }
             }
+          }
         }),
         navigationOptions: {
           tabBarLabel: 'Home',
