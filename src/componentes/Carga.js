@@ -3,7 +3,8 @@ import firebase from 'firebase';
 import {
 	Image,
 	View,
-	Text
+	Text,
+	Platform
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { Bar } from 'react-native-progress';
@@ -105,7 +106,7 @@ const estilos = {
 		fontSize: 16,
 		fontWeight: '300',
 		color: 'rgb(159, 162, 164)',
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Open Sans',
 		opacity: 0.75
 	}
 };

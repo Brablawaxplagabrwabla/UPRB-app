@@ -12,30 +12,49 @@ class Ausencias extends Component {
   
 	componentWillMount() {
     const user = firebase.auth().currentUser;
-    firebase.database().ref(`/Usuarios/${user.uid}`).on('value', snapshotUser => {
-      const secciones = snapshotUser.val().secciones;
-      let data = [];
-      _.map(secciones, o => {
-        firebase.database().ref(`/Secciones/${o.codigo}`).on('value', snapshotSec => {
-          const profID = snapshotSec.val().profesor;
-          firebase.database.ref(`/Secciones/${profID}`).on('value', snapshotProf => {
-            const nombreProf = snapshotProf.val().nombre;
-            let seccion = {};
-            seccion.codigo = o.codigo;
-            seccion.profesor = nombreProf;
-            seccion.inasistencias = o.inasistencias;
-            data.push(seccion);
-          });
-        });
-      });
-      this.setState({ cargando: false, snapshot: data });
-    });
+		const secciones = this.buscarSecciones(user);
+		const profesores = this.buscarProfesores(secciones);
+		const data = this.armarDatos(secciones, profesores);
+		this.setState({cargando: false, snapshot: data});
   }
+
+	buscarSecciones(user) {
+		firebase.database().ref(`/Usuarios/${user.uid}`).on('value', snapshot => { 
+			const usuario = snapshot.val();
+			return usuario.secciones; 
+		});
+	}
+
+	buscarProfesores(secciones) {
+		let profesores = [];
+		secciones.forEach(secciones, seccion => {
+			firebase.database().ref(`/Usuarios/${seccion.profesor}`).on('value', snapshot => {
+				const nombre = snapshot.val().nombre;
+				profesores.push(nombre);
+			});
+		});
+		return profesores;
+	} 
+	
+	armarDatos(secciones, profesores) {
+		let datos = [];
+		if (secciones.length === profesores.length) {
+			for(let i = secciones.length; i >= 0; i--) {
+				let data = {
+					codigo: secciones[i].codigo,
+					profesor: profesor[i],
+					inasistencias: secciones[i].inasistencias
+				};
+				datos.push(data);
+			}
+		}
+		return datos;
+	}
 
 	prepararDatos() {
 		const datos = _.map(this.state.snapshot, (o) => {
 			return {
-        codigo: o.seccion,
+        codigo: o.codigo,
         profesor: o.profesor,
         inasistencias: o.inasistencias
 			};

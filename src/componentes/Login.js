@@ -3,7 +3,8 @@ import {
 	Image,
 	View,
 	TouchableOpacity,
-	Text
+	Text, 
+	Platform
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -123,7 +124,7 @@ const estilos = {
 		height: 76
 	},
 	textoOlvido: {
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Open Sans',
 		color: '#bebebe',
 		fontSize: 14,
 		opacity: 0.8,

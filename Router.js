@@ -142,7 +142,7 @@ const Navegador = StackNavigator({
               headerTitle: 'Clases',
               headerTitleStyle: {
                 fontSize: 18,
-                fontFamily: 'Roboto',
+                fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Open Sans',
                 fontWeight: '400',
                 color: '#rgb(154, 157, 159)',
                 alignSelf: 'center'
