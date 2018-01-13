@@ -37,8 +37,21 @@ class Clases extends Component {
 		return datos;
 	}
 
-	generadorLista() {
+	click(clase) {
 		const { navigate } = this.props.navigation;
+		const { user } = this.props.datos.data;
+		const usuario = user.uid;
+		firebase.database().ref(`/Usuarios/${usuario}`)
+		.once('value')
+		.then((usuarioSnapshot) => {
+			if (usuarioSnapshot.val().tipo.toLowerCase() === 'estudiante') {
+				navigate('Secciones', { codigo: clase.codigo });
+			}
+		})
+		.catch((error) => console.log(error));
+	}
+
+	generadorLista() {
 		if (!this.state.cargando) {
 			return (
 				<FlatList
@@ -49,7 +62,7 @@ class Clases extends Component {
 					<Clase 
 						nombre={item.nombre} 
 						codigo={item.codigo} 
-						onPress={() => navigate('Secciones', { codigo: this.props.codigo })} 
+						onPress={() => this.click(item)} 
 					/>}
 				/>
 			);

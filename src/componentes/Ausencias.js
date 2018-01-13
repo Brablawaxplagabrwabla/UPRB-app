@@ -10,17 +10,17 @@ import { Spinner } from './reusables/';
 class Ausencias extends Component {
   state = { cargando: true, snapshot: {} }
   
-	componentWillMount() {
+	componentDidMount() {
     const user = firebase.auth().currentUser;
     firebase.database().ref(`/Usuarios/${user.uid}`).on('value', snapshotUser => {
       const secciones = snapshotUser.val().secciones;
-      let data = [];
+      const data = [];
       _.map(secciones, o => {
         firebase.database().ref(`/Secciones/${o.codigo}`).on('value', snapshotSec => {
           const profID = snapshotSec.val().profesor;
           firebase.database.ref(`/Secciones/${profID}`).on('value', snapshotProf => {
             const nombreProf = snapshotProf.val().nombre;
-            let seccion = {};
+            const seccion = {};
             seccion.codigo = o.codigo;
             seccion.profesor = nombreProf;
             seccion.inasistencias = o.inasistencias;
