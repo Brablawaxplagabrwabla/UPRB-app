@@ -10,7 +10,7 @@ import { Spinner } from './reusables/';
 class Ausencias extends Component {
   state = { cargando: true, snapshot: {} }
   
-	componentWillMount() {
+	componentDidMount() {
     const user = firebase.auth().currentUser;
 		const secciones = this.buscarSecciones(user);
 		const profesores = this.buscarProfesores(secciones);

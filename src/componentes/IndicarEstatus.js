@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, Image, TouchableHighlight } from 'react-native';
+import { connect } from 'react-redux';
 import firebase from 'firebase';
 import moment from 'moment';
-import encurso from '../assets/ico_encurso.png';
-import atrasada from '../assets/ico_atrasada.png';
-import cancelada from '../assets/ico_cancelada.png';
 
 class IndicarEstatus extends Component {
 	auxiliarDias(dia) {
@@ -94,6 +92,7 @@ class IndicarEstatus extends Component {
 
 	render() {
 		const { seccion } = this.props.navigation.state.params;
+		const { iconos } = this.props.datos.data;
 		return (
 			<View style={estilos.contenedorPrincipal}>
 				<View style={estilos.cuadroGrande}>
@@ -112,7 +111,7 @@ class IndicarEstatus extends Component {
 				<View style={estilos.contenedorCuadrados}>
 					<TouchableHighlight onPress={this.clickATiempo.bind(this)}>
 						<View style={estilos.contenedorPeq}>
-							<Image source={encurso} style={estilos.icono} />
+							<Image source={{ uri: iconos.ico_encurso }} style={estilos.icono} />
 							<Text style={estilos.textoIcono}>
 								A TIEMPO
 							</Text>
@@ -120,7 +119,7 @@ class IndicarEstatus extends Component {
 					</TouchableHighlight>
 					<TouchableHighlight onPress={this.clickConRetraso.bind(this)}>
 						<View style={estilos.contenedorPeq}>
-							<Image source={atrasada} style={estilos.icono} />
+							<Image source={{ uri: iconos.ico_atrasada }} style={estilos.icono} />
 							<Text style={estilos.textoIcono}>
 								CON RETRASO
 							</Text>
@@ -128,7 +127,7 @@ class IndicarEstatus extends Component {
 					</TouchableHighlight>
 					<TouchableHighlight onPress={this.clickCancelada.bind(this)}>
 						<View style={estilos.contenedorPeq}>
-							<Image source={cancelada} style={estilos.icono} />
+							<Image source={{ uri: iconos.ico_cancelada }} style={estilos.icono} />
 							<Text style={estilos.textoIcono}>
 								CANCELADA
 							</Text>
@@ -188,4 +187,8 @@ const estilos = {
 	}
 };
 
-export default IndicarEstatus;
+const mapStateToProps = state => {
+	return { datos: state };
+};
+
+export default connect(mapStateToProps)(IndicarEstatus);
