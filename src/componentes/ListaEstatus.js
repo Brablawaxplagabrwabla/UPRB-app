@@ -49,36 +49,51 @@ class ListaEstatus extends Component {
 		firebase.database().ref(`/Usuarios/${uid}`)
 		.once('value')
 		.then(async (user) => {
-			const secciones = user.val().datos.secciones;
+			let secciones;
+			if (user.val().datos !== null && user.val().datos !== undefined) {
+				secciones = user.val().datos.secciones;
+			} else {
+				secciones = null;
+			}
 			const esDocente = (user.val().tipo === 'docente');
-			const profesor = user.val().nombre;
-			for (let i = 0; i < secciones.length; i++) {
-				await firebase.database().ref(`/Secciones/${secciones[i]}`)
-				.once('value')
-				.then((seccion) => {
-					let imagen;
-					if (seccion.val().estatus.toLowerCase() === 'en curso') {
-						imagen = iconos.ico_encurso;
-					} else if (seccion.val().estatus.toLowerCase() === 'atrasada') {
-						imagen = iconos.ico_atrasada;
-					} else {
-						imagen = iconos.ico_cancelada;
-					}
-					const objeto = {
-						docente: esDocente,
-						hora: seccion.val().horario.hora,
-						dias: seccion.val().horario.dias.toUpperCase(),
-						seccion: secciones[i],
-						profesor,
-						imagen,
-						iconoTexto: seccion.val().estatus.toUpperCase()
-					};
-					datos.push(objeto);
-					if (i === secciones.length - 1) {
-						this.setState({ datos, cargando: false });
-					}
-				})
-				.catch((error) => console.log(error));
+			if (secciones !== null && secciones !== undefined) {
+				for (let i = 0; i < secciones.length; i++) {
+					await firebase.database().ref(`/Secciones/${secciones[i]}`)
+					.once('value')
+					.then(async (seccion) => {
+						let imagen;
+						let profesor = seccion.val().profesor;
+						await firebase.database().ref(`/Usuarios/${profesor}`)
+						.once('value')
+						.then((snapshotProfesor) => {
+							profesor = snapshotProfesor.val().nombre;
+						})
+						.catch((error) => console.log(error));
+						if (seccion.val().estatus.toLowerCase() === 'en curso') {
+							imagen = iconos.ico_encurso;
+						} else if (seccion.val().estatus.toLowerCase() === 'atrasada') {
+							imagen = iconos.ico_atrasada;
+						} else {
+							imagen = iconos.ico_cancelada;
+						}
+						const objeto = {
+							docente: esDocente,
+							hora: seccion.val().horario.hora,
+							dias: seccion.val().horario.dias.toUpperCase(),
+							seccion: secciones[i],
+							profesor,
+							imagen,
+							iconoTexto: seccion.val().estatus.toUpperCase()
+						};
+						datos.push(objeto);
+						if (i === secciones.length - 1) {
+							this.setState({ datos, cargando: false });
+						}
+					})
+					.catch((error) => console.log(error));
+				}
+			} else {
+				this.setState({ cargando: false });
 			}
 		})
 		.catch((error) => console.log(error));

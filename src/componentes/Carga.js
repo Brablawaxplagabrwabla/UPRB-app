@@ -35,8 +35,8 @@ class Carga extends Component {
 				num = snapshot.val();
 			});
 		const ref = '/Metadata/datos/iconos/';
-		for (let i = 1; i <= num; i++) {
-			this.setState({ progreso: i / num });
+		for (let i = 0; i < num; i++) {
+			this.setState({ progreso: (i + 1) / num });
 			await firebase.database().ref(ref + i)
 				.once('value')
 				.then((snapshot) => {

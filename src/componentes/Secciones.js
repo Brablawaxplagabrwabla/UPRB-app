@@ -52,7 +52,12 @@ class Secciones extends Component {
 		await firebase.database().ref(`/Usuarios/${usuario}`)
 		.once('value')
 		.then((inscritasSnapshot) => {
-			inscritas = inscritasSnapshot.val().datos.secciones;
+			if (inscritasSnapshot.val().datos !== null &&
+				inscritasSnapshot.val().datos !== undefined) {
+				inscritas = inscritasSnapshot.val().datos.secciones;
+			} else {
+				inscritas = null;
+			}
 		})
 		.catch((error) => console.log(error));
 
@@ -168,7 +173,11 @@ class Secciones extends Component {
 			await firebase.database().ref(`/Usuarios/${usuario}/datos/secciones`)
 			.once('value')
 			.then(async (snapshotInscritas) => {
-				const inscritas = snapshotInscritas.val();
+				let inscritas = [];
+				if (snapshotInscritas.val() !== null &&
+					snapshotInscritas.val() !== undefined) {
+					inscritas = snapshotInscritas.val();
+				}
 				inscritas.push(this.state.seccion.key);
 				await firebase.database().ref(`/Usuarios/${usuario}/datos/secciones`)
 				.set(inscritas)
