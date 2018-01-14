@@ -137,7 +137,22 @@ const Navegador = StackNavigator({
             }
           },
           Secciones: {
-            screen: Secciones
+            screen: Secciones,
+            navigationOptions: {
+              headerTitle: 'Clases',
+              headerTitleStyle: {
+                fontSize: 18,
+                fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Open Sans',
+                fontWeight: '400',
+                color: '#rgb(154, 157, 159)',
+                alignSelf: 'center'
+              },
+              headerStyle: {
+                marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 20,
+                backgroundColor: '#rgb(247, 247, 247)',
+                marginBottom: 8
+              }
+            }
           }
         }),
         navigationOptions: {

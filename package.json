@@ -25,7 +25,6 @@
     "firebase": "^4.8.1",
     "lodash": "^4.17.4",
     "moment": "^2.20.1",
-    "native-base": "^2.3.5",
     "react": "16.0.0",
     "react-native": "0.50.3",
     "react-native-modal": "^4.1.1",
