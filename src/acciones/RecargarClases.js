@@ -1,6 +1,6 @@
 export const recargarClases = () => {
 	return {
-		type: 'reloadClases',
-		payload: true
+		type: 'reload',
+		payload: 'clases'
 	};
 };

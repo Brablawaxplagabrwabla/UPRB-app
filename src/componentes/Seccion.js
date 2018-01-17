@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import {
 	Text,
 	View,
-	Image,
-	TouchableOpacity
+	Image
 } from 'react-native';
+import { Boton2 } from './reusables';
 
 class Seccion extends Component {
 	suscrito() {
@@ -21,9 +21,9 @@ class Seccion extends Component {
 			);
 		}
 		return (
-			<TouchableOpacity onPress={this.props.onPress} style={estilos.boton}>
-				<Text style={estilos.textoBoton}>Suscribirse</Text>
-			</TouchableOpacity>
+			<Boton2 onPress={this.props.onPress}>
+				Suscribirse
+			</Boton2>
 		);
 	}
 	render() {
@@ -104,21 +104,6 @@ const estilos = {
 		height: 30,
 		width: 30,
 		alignSelf: 'center'
-	},
-	boton: {
-		backgroundColor: '#fff',
-		borderWidth: 2,
-		borderRadius: 5,
-		borderColor: '#rgb(186, 188, 189)'
-	},
-	textoBoton: {
-		fontFamily: 'Roboto',
-		color: '#rgb(186, 188, 189)',
-		fontSize: 12,
-		paddingTop: 3,
-		paddingBottom: 3,
-		paddingLeft: 8,
-		paddingRight: 8
 	},
 	textoSuscrito: {
 		fontFamily: 'Roboto',

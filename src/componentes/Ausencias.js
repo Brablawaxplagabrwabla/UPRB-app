@@ -1,98 +1,172 @@
 import React, { Component } from 'react';
-import firebase from 'firebase';
-import _ from 'lodash';
-import { FlatList, View } from 'react-native';
+import {
+	FlatList,
+	View,
+	Platform,
+	StatusBar
+} from 'react-native';
 import { connect } from 'react-redux';
-
+import firebase from 'firebase';
 import Ausencia from './Ausencia';
-import { Spinner } from './reusables/';
+import HeaderAusencia from './HeaderAusencia';
+import Recarga from './Reload';
+import { Spinner } from './reusables';
 
 class Ausencias extends Component {
-  state = { cargando: true, snapshot: {} }
-  
-	componentDidMount() {
-    const user = firebase.auth().currentUser;
-		const secciones = this.buscarSecciones(user);
-		const profesores = this.buscarProfesores(secciones);
-		const data = this.armarDatos(secciones, profesores);
-		this.setState({cargando: false, snapshot: data});
-  }
-
-	buscarSecciones(user) {
-		firebase.database().ref(`/Usuarios/${user.uid}`).on('value', snapshot => { 
-			let usuario = snapshot.val();
-			return usuario.secciones; 
-		});
+	static navigationOptions = {
+		headerTitle: <HeaderAusencia />,
+		headerStyle: {
+		marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 20,
+		backgroundColor: '#rgb(247, 247, 247)',
+		marginBottom: 8
+	},
+		headerRight: <View />,
+		headerLeft: <Recarga boolean={false} />
 	}
 
-	buscarProfesores(secciones) {
-		let profesores = [];
-		secciones.forEach(secciones, seccion => {
-			firebase.database().ref(`/Usuarios/${seccion.profesor}`).on('value', snapshot => {
-				const nombre = snapshot.val().nombre;
-				profesores.push(nombre);
-			});
-		});
-		return profesores;
-	} 
-	
-	armarDatos(secciones, profesores) {
-		let datos = [];
-		if (secciones.length === profesores.length) {
-			for(let i = secciones.length; i >= 0; i--) {
-				let data = {
-					codigo: secciones[i].codigo,
-					profesor: profesor[i],
-					inasistencias: secciones[i].inasistencias
-				};
-				datos.push(data);
+	state = { cargando: true, data: [] }
+
+	componentDidMount() {
+		// Cada estudiante en datos-ausencias tiene un array por sección
+		// Cada array tiene la fecha y hora de la ausencia, además del nombre de la sección
+		const { profesor } = this.props.datos.data;
+		if (profesor) {
+			this.cargarDatosProfesor();
+		} else {
+			this.cargarDatosEstudiante();
+		}
+	}
+
+	componentWillReceiveProps(nextProps) {
+		const { profesor } = this.props.datos.data;
+		if (nextProps.recargaAusencias === 'ausencias') {
+			this.setState({ cargando: true });
+			if (profesor) {
+				this.cargarDatosProfesor();
+			} else {
+				this.cargarDatosEstudiante();
 			}
 		}
-		return datos;
 	}
 
-	prepararDatos() {
-		const datos = _.map(this.state.snapshot, (o) => {
-			return {
-        codigo: o.codigo,
-        profesor: o.profesor,
-        inasistencias: o.inasistencias
-			};
-		});
-		return datos;
+	cargarDatosProfesor() {
+		const { user } = this.props.datos.data;
+		firebase.database().ref(`/Usuarios/${user.uid}`)
+		.once('value')
+		.then(async (snapshotUsuario) => {
+			const secciones = snapshotUsuario.val().datos.secciones;
+			const profesor = snapshotUsuario.val().nombre;
+			const data = [];
+			for (let i = 0; i < secciones.length; i++) {
+				await firebase.database().ref(`/Secciones/${secciones[i]}`)
+				.once('value')
+				.then((snapshotSeccion) => {
+					let estudiantes = [];
+					if (snapshotSeccion.val().estudiantes) {
+						estudiantes = snapshotSeccion.val().estudiantes;
+					}
+					const dias = snapshotSeccion.val().horario.dias;
+					const hora = snapshotSeccion.val().horario.hora;
+					data.push({
+						seccion: secciones[i],
+						profesor,
+						dias,
+						hora
+					});
+				})
+				.catch((error) => console.log(error));
+			}
+			this.setState({ cargando: false, data });
+		})
+		.catch((error) => console.log(error));
 	}
 
-	generadorLista() {
-		if (!this.state.cargando) {
-			return (
-				<FlatList
-					numColumns={1}
-					data={this.prepararDatos()}
-					keyExtractor={(item) => item.seccion}
-					renderItem={({ item }) => 
-					<Ausencia
-						codigo={item.codigo}
-						profesor={item.profesor}
-						inasistencias={item.inasistencias}
-						onPress={() => this.onClick(item)} 
-					/>}
-				/>
-			);
+	cargarDatosEstudiante() {
+		const { user } = this.props.datos.data;
+		firebase.database().ref(`/Usuarios/${user.uid}`)
+		.once('value')
+		.then(async (userSnapshot) => {
+			if (userSnapshot.val().datos && userSnapshot.val().datos.ausencias) {
+				const secciones = Object.keys(userSnapshot.val().datos.ausencias);
+				const datos = [];
+				for (let i = 0; i < secciones.length; i++) {	
+					const detalles = userSnapshot.val().datos.ausencias[secciones[i]];
+					const numAusencias = detalles.length;
+					await firebase.database().ref(`/Secciones/${secciones[i]}`)
+					.once('value')
+					.then(async (snapshotSeccion) => {
+						let profesor = snapshotSeccion.val().profesor;
+						await firebase.database().ref(`/Usuarios/${profesor}`)
+						.once('value')
+						.then((snapshotProfesor) => {
+							profesor = snapshotProfesor.val().nombre;
+							datos.push({
+								seccion: secciones[i],
+								profesor,
+								numero: numAusencias,
+								detalles
+							});
+						})
+						.catch((error) => console.log(error));
+					})
+					.catch((error) => console.log(error));
+				}
+				this.setState({ cargando: false, data: datos });
+			} else {
+				this.setState({ cargando: false });
+			}
+		})
+		.catch((error) => console.log(error));
+	}
+
+	click(ausencia) {
+		const { profesor } = this.props.datos.data;
+		if (!profesor) {
+			this.props.navigation.navigate('DetallesAusencia', {
+				codigo: ausencia.seccion,
+				detalles: ausencia.detalles
+			});
+		} else {
+			this.props.navigation.navigate('ListaEstudiantes', {
+				codigo: ausencia.seccion
+			});
 		}
-		return <Spinner tamano={'small'} />;
+	}
+
+	data() {
+		return this.state.data;
 	}
 
 	render() {
+		const { profesor } = this.props.datos.data;
+		if (this.state.cargando) {
+			return <Spinner tamano={'small'} />;
+		}
 		return (
-			<View>
-				{this.generadorLista()}
-			</View>
+			<FlatList
+				data={this.data()}
+				keyExtractor={(item) => item.seccion}
+				renderItem={({ item }) =>
+				<Ausencia
+					esDocente={profesor}
+					seccion={item.seccion}
+					profesor={item.profesor}
+					numero={item.numero}
+					detalles={item.detalles}
+					hora={item.hora}
+					dias={item.dias}
+					onPress={() => this.click(item)}
+				/>}
+			/>
 		);
 	}
 }
 
 const mapStateToProps = state => {
-	return { datos: state };
+	if (state.reload === null) {
+		return { datos: state };
+	}
+	return { datos: state, recargaAusencias: state.reload.cargando };
 };
 
 export default connect(mapStateToProps)(Ausencias);

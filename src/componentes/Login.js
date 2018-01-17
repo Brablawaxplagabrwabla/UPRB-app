@@ -41,9 +41,20 @@ class Login extends Component {
 			.catch(this.loginFallo.bind(this));
 	}
 
-	loginExitoso(user) {
+	async loginExitoso(user) {
+		let profesor;
+		await firebase.database().ref(`/Usuarios/${user.uid}`)
+		.once('value')
+		.then((snapshot) => {
+			profesor = snapshot.val().tipo.toLowerCase() === 'docente';
+		})
+		.catch((error) => console.log(error));
 		this.setState({ cargando: false });
-		this.props.enviarDatos({ iconos: this.props.navigation.state.params, user });
+		this.props.enviarDatos({
+			iconos: this.props.navigation.state.params,
+			user,
+			profesor
+		});
 		this.props.navigation.dispatch(NavigationActions.reset({
 			index: 0,
 			actions: [

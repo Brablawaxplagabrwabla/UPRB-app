@@ -1,15 +1,22 @@
 import React, { Component } from 'react';
 import { View, Image, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
-import { recargarClases } from '../acciones';
+import { recargarClases, recargarAusencias } from '../acciones';
 import Reload from '../assets/loading.png';
 
 class Recarga extends Component {
 	click() {
-		this.props.recargarClases();
+		if (this.props.boolean) {
+			this.props.recargarClases();
+		} else {
+			this.props.recargarAusencias();
+		}
 	}
 
 	render() {
+		if (this.props.datos.data.profesor) {
+			return <View />;
+		}
 		return (
 			<TouchableWithoutFeedback onPress={this.click.bind(this)}>
 				<View style={estilos.contenedorReload}>
@@ -34,4 +41,8 @@ const estilos = {
 	}
 };
 
-export default connect(null, { recargarClases })(Recarga);
+const mapStateToProps = state => {
+	return { datos: state };
+};
+
+export default connect(mapStateToProps, { recargarClases, recargarAusencias })(Recarga);

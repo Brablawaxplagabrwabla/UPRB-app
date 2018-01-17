@@ -23,7 +23,7 @@ class ListaEstatus extends Component {
 			backgroundColor: '#rgb(247, 247, 247)',
 			marginBottom: 8
 		},
-		headerLeft: <Recarga />,
+		headerLeft: <Recarga boolean />,
 		headerRight: <View />
 	}
 
@@ -33,13 +33,11 @@ class ListaEstatus extends Component {
 		return await this.buscarDatos();
 	}
 
-	componentWillReceiveProps() {
-		this.setState({ cargando: true });
-		this.buscarDatos();
-	}
-
-	aux() {
-		return this.state.cargando();
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.recargaClases === 'clases') {
+			this.setState({ cargando: true });
+			this.buscarDatos();
+		}
 	}
 
 	buscarDatos() {
@@ -141,7 +139,7 @@ const mapStateToProps = state => {
 	if (state.reload === null) {
 		return { datos: state };
 	}
-	return { datos: state, recarga: state.reload.cargando };
+	return { datos: state, recargaClases: state.reload.cargando };
 };
 
 export default connect(mapStateToProps)(ListaEstatus);

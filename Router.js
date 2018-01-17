@@ -14,7 +14,9 @@ import IndicarEstatus from './src/componentes/IndicarEstatus';
 import Clases from './src/componentes/Clases';
 import Secciones from './src/componentes/Secciones';
 import Ausencias from './src/componentes/Ausencias';
-import DetallesAusencias from './src/componentes/DetallesAusencias';
+import ListaDetallesAusencia from './src/componentes/ListaDetallesAusencia';
+import ListaEstudiantes from './src/componentes/ListaEstudiantes';
+import MarcarAusencia from './src/componentes/MarcarAusencia';
 
 class Router extends Component {
     render() {
@@ -117,7 +119,7 @@ const Navegador = StackNavigator({
               }
             }
           },
-          Clases: {
+          Clases: {   
             screen: Clases,
             navigationOptions: {
               headerTitle: 'Clases',
@@ -137,22 +139,7 @@ const Navegador = StackNavigator({
             }
           },
           Secciones: {
-            screen: Secciones,
-            navigationOptions: {
-              headerTitle: 'Clases',
-              headerTitleStyle: {
-                fontSize: 18,
-                fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Open Sans',
-                fontWeight: '400',
-                color: '#rgb(154, 157, 159)',
-                alignSelf: 'center'
-              },
-              headerStyle: {
-                marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 20,
-                backgroundColor: '#rgb(247, 247, 247)',
-                marginBottom: 8
-              }
-            }
+            screen: Secciones
           }
         }),
         navigationOptions: {
@@ -165,13 +152,19 @@ const Navegador = StackNavigator({
           )
         }
       },
-      Ausencias: {
+      Absence: {
         screen: StackNavigator({
           Ausencias: {
             screen: Ausencias
           },
-          DetallesAusencias: {
-            screen: DetallesAusencias
+          DetallesAusencia: {
+            screen: ListaDetallesAusencia
+          },
+          ListaEstudiantes: {
+            screen: ListaEstudiantes
+          },
+          MarcarAusencia: {
+            screen: MarcarAusencia
           }
         }),
         navigationOptions: {
