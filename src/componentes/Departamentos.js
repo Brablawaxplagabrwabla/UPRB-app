@@ -8,7 +8,8 @@ import { Spinner } from './reusables/';
 
 class Departamentos extends Component {
 	state = { cargando: true, snapshot: {} }
-	componentWillMount() {
+	
+	componentDidMount() {
 		firebase.database().ref('/Departamentos')
 			.on('value', (snapshot) => {
 				this.setState({ cargando: false, snapshot: snapshot.val() });

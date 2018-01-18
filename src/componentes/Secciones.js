@@ -181,7 +181,22 @@ class Secciones extends Component {
 				inscritas.push(this.state.seccion.key);
 				await firebase.database().ref(`/Usuarios/${usuario}/datos/secciones`)
 				.set(inscritas)
-				.then(() => {
+				.then(async () => {
+					await firebase.database()
+					.ref(`/Secciones/${this.state.seccion.key}/estudiantes`)
+					.once('value')
+					.then((snapshotEstudiantes) => {
+						let estudiantes = snapshotEstudiantes.val();
+						if (estudiantes === null) {
+							estudiantes = [];
+						}
+						estudiantes.push(usuario);
+						firebase.database()
+						.ref(`/Secciones/${this.state.seccion.key}/estudiantes`)
+						.set(estudiantes)
+						.catch((error) => console.log(error));
+					})
+					.catch((error) => console.log(error));
 					const t = _.findIndex(this.state.datos, (o) => {
 						return o.key === this.state.seccion.key;
 					});

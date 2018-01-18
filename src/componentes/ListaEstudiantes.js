@@ -1,76 +1,135 @@
 import React, { Component } from 'react';
-import firebase from 'firebase';
-import _ from 'lodash';
-import { FlatList, View } from 'react-native';
+import {
+	FlatList,
+	Platform,
+	StatusBar,
+	Text,
+	View
+} from 'react-native';
 import { connect } from 'react-redux';
-
+import firebase from 'firebase';
+import { Spinner } from './reusables';
 import Estudiante from './Estudiante';
-import { Spinner } from './reusables/';
 
 class ListaEstudiantes extends Component {
-  state = { cargando: true, snapshot: {} }
-	componentWillMount() {
-    firebase.database().ref('/Usuario')
-      .on('value', snapshot => {
-        let data = [];
-        const users = _.filter(snapshot.val(), u => u.tipo === 'alumno');
-        _.forEach(users, (value) => {
-          const secciones = value.secciones;
-          _.forEach(secciones, element => {
-            if (element === this.props.navigation.state.params.seccion) {
-              const user = {
-                nombre: value.nombre,
-                uid: value.uid // Necesitamos obtener este dato
-              };
-              data.push(user);
-            }
-          });
-        });
-        this.setState({ cargando: false, snapshot: data });
-      });
-    // Creo que es demasiado procesamiento y no esta super optimo  
-  }
+	static navigationOptions = ({ navigation }) => ({
+		headerTitle: (
+			<View style={{ alignSelf: 'center', alignItems: 'center' }}>
+				<Text style={estilos.texto2}>Lista de Estudiantes</Text>
+				<Text style={estilos.texto1}>
+					{navigation.state.params.codigo.substring(0, 9)}
+				</Text>
+			</View>
+		),
+		headerStyle: {
+			marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 20,
+			backgroundColor: '#rgb(247, 247, 247)',
+			marginBottom: 8
+		},
+		headerRight: <View />
+	})
 
-	prepararDatos() {
-		const datos = _.map(this.state.snapshot, (o) => {
-			return {
-        nombre: o.nombre,
-        uid: o.uid 
-			};
-		});
-		return datos;
+	state = { cargando: true, data: [] }
+
+	componentDidMount() {
+		this.cargarDatos();
 	}
 
-	generadorLista() {
-		if (!this.state.cargando) {
-			return (
-				<FlatList
-					numColumns={1}
-					data={this.prepararDatos()}
-					keyExtractor={(item) => item.seccion}
-					renderItem={({ item }) => 
-					<Estudiante
-						nombre={item.nombre}
-						uid={item.uid}
-						onPress={() => this.onClick(item)} 
-					/>}
-				/>
-			);
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.recargaListaEstudiantes === 'listaEstudiantes') {
+			this.setState({ cargando: true, data: [] });
+			this.cargarDatos();
 		}
-		return <Spinner tamano={'small'} />;
+	}
+
+	cargarDatos() {
+		const { codigo } = this.props.navigation.state.params;
+		firebase.database().ref(`/Secciones/${codigo}`)
+		.once('value')
+		.then(async (snapshotSeccion) => {
+			if (snapshotSeccion.val().estudiantes) {
+				const estudiantes = snapshotSeccion.val().estudiantes;
+				const data = [];
+				const horario = snapshotSeccion.val().horario;
+				for (let i = 0; i < estudiantes.length; i++) {
+					await firebase.database().ref(`/Usuarios/${estudiantes[i]}`)
+					.once('value')
+					.then((snapshotEstudiante) => {
+						let num;
+						if (snapshotEstudiante.val().datos &&
+							snapshotEstudiante.val().datos.ausencias
+							&& snapshotEstudiante.val().datos.ausencias[codigo]) {	
+							num = snapshotEstudiante.val().datos.ausencias[codigo].length;
+						} else {
+							num = 0;
+						}
+						data.push({
+							nombre: snapshotEstudiante.val().nombre,
+							codigo: estudiantes[i],
+							seccion: codigo,
+							numero: num,
+							horario
+						});
+					})
+					.catch((error) => console.log(error));
+				}
+				this.setState({ cargando: false, data });
+			} else {
+				this.setState({ cargando: false });
+			}
+		})
+		.catch((error) => console.log(error));
+	}
+
+	click(estudiante) {
+		this.props.navigation.navigate('MarcarAusencia', {
+			estudiante
+		});
+	}
+
+	data() {
+		return this.state.data;
 	}
 
 	render() {
+		if (this.state.cargando) {
+			return <Spinner tamano={'small'} />;
+		}
 		return (
-			<View>
-				{this.generadorLista()}
-			</View>
+			<FlatList
+				data={this.data()}
+				keyExtractor={(item) => item.codigo}
+				renderItem={({ item }) =>
+					<Estudiante
+						nombre={item.nombre}
+						onPress={() => this.click(item)}
+					/>}
+			/>
 		);
 	}
 }
 
+const estilos = {
+	texto1: {
+		fontSize: 18,
+		fontFamily: 'Roboto',
+		fontWeight: '400',
+		color: '#rgb(154, 157, 159)',
+		alignSelf: 'center'	
+	},
+	texto2: {
+		fontSize: 17,
+		fontFamily: 'Roboto',
+		fontWeight: '400',
+		color: '#rgb(154, 157, 159)'
+	},
+};
+
 const mapStateToProps = state => {
-	return { datos: state };
+	if (state.reload === null) {
+		return { datos: state };
+	}
+	return { datos: state, recargaListaEstudiantes: state.reload.cargando };
 };
 
 export default connect(mapStateToProps)(ListaEstudiantes);

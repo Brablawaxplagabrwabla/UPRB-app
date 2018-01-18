@@ -1,33 +1,48 @@
 import React from 'react';
-import { View, Text, TouchableWithoutFeedback, Image } from 'react-native';
+import { Image, Text, View } from 'react-native';
+import { ContenedorLista } from './reusables';
+import flecha from '../assets/flecha.png';
 
-class Estudiante extends React.Component {
-  
-  render() {
-    return (
-      <TouchableWithoutFeedback onPress={this.props.onPress}>
-        <View style={styles.container}>
-          <View style={styles.column}>
-            <Text style={styles.column}>{this.props.nombre}</Text>
-          </View>
-          <View style={styles.column}>
-          <Image source={{}} style={styles.image} />
-          </View>
-        </View>
-      </TouchableWithoutFeedback>
-    );
-  }
-}
+const Estudiante = ({ onPress, nombre }) => {
+	return (
+		<ContenedorLista onPress={onPress}>
+			<View style={estilos.contenedorTexto}>
+				<Text style={estilos.texto}>{nombre}</Text>
+			</View>
+			<View style={estilos.contenedorIcono}>
+				<View style={estilos.contenedorIcono}>
+					<Image
+						style={estilos.icono}
+						source={flecha}
+						resizeMode={'contain'}
+					/>
+				</View>
+			</View>
+		</ContenedorLista>
+	);
+};
 
-const styles = {
-	/*ES NECESARIO TEMINAR LOS ESTILOS COÑO E TU MADRE*/
-	text: {
-		alignSelf: 'center',
-		textAlign: 'center',
-		color: '#rgb(181, 184, 185)',
+const estilos = {
+	contenedorTexto: {
+		flex: 4,
+		justifyContent: 'center'
+	},
+	texto: {
+		paddingLeft: '7%',
 		fontFamily: 'Roboto',
-		fontSize: 16
-	}
+		fontSize: 17,
+		color: '#rgb(154, 157, 159)'
+	},
+	contenedorIcono: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	icono: {
+		height: 14,
+		width: 18,
+		alignSelf: 'center'
+	},
 };
 
 export default Estudiante;

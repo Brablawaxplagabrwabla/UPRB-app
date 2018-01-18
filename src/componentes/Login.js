@@ -9,6 +9,7 @@ import {
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import firebase from 'firebase';
+import { Permissions, Notifications } from 'expo';
 import { Contenedor, Input, Boton, Spinner } from './reusables/';
 import { enviarDatos } from '../acciones';
 // import Logo from '../assets/ico_uprb.png';
@@ -41,9 +42,21 @@ class Login extends Component {
 			.catch(this.loginFallo.bind(this));
 	}
 
-	loginExitoso(user) {
+	async loginExitoso(user) {
+		let profesor;
+		await firebase.database().ref(`/Usuarios/${user.uid}`)
+		.once('value')
+		.then((snapshot) => {
+			profesor = snapshot.val().tipo.toLowerCase() === 'docente';
+		})
+		.catch((error) => console.log(error));
 		this.setState({ cargando: false });
-		this.props.enviarDatos({ iconos: this.props.navigation.state.params, user });
+		this.props.enviarDatos({
+			iconos: this.props.navigation.state.params,
+			user,
+			profesor
+		});
+		this.registerForPushNotificationsAsync(user.uid);
 		this.props.navigation.dispatch(NavigationActions.reset({
 			index: 0,
 			actions: [
@@ -55,6 +68,29 @@ class Login extends Component {
 	loginFallo() {
 		this.setState({ cargando: false });
 		this.setState({ error: 'Falló la autenticación' });
+	}
+
+	async registerForPushNotificationsAsync(codigo) {
+		const { status: existingStatus } = await Permissions.getAsync(
+			Permissions.NOTIFICATIONS
+		);
+
+		let finalStatus = existingStatus;
+
+		if (existingStatus !== 'granted') {
+			const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+			finalStatus = status;
+		}
+
+		if (finalStatus !== 'granted') {
+			return;
+		}
+
+		const token = await Notifications.getExpoPushTokenAsync();
+
+		firebase.database().ref(`/Usuarios/${codigo}`)
+		.update({ token })
+		.catch((error) => console.log(error));
 	}
 
 	renderDelBoton() {

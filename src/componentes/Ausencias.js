@@ -1,189 +1,172 @@
 import React, { Component } from 'react';
-import firebase from 'firebase';
-import _ from 'lodash';
-import { FlatList, View } from 'react-native';
+import {
+	FlatList,
+	View,
+	Platform,
+	StatusBar
+} from 'react-native';
 import { connect } from 'react-redux';
+import firebase from 'firebase';
 import Ausencia from './Ausencia';
-import { 	Spinner } from './reusables/';
+import HeaderAusencia from './HeaderAusencia';
+import Recarga from './Reload';
+import { Spinner } from './reusables';
 
 class Ausencias extends Component {
-	state = { cargando: true, snapshot: {} }
-
-	async componentDidMount() {
-		const data = await this.auxiliar();
-		await this.setState({
-			cargando: false,
-			snapshot: data
-		});
+	static navigationOptions = {
+		headerTitle: <HeaderAusencia />,
+		headerStyle: {
+		marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 20,
+		backgroundColor: '#rgb(247, 247, 247)',
+		marginBottom: 8
+	},
+		headerRight: <View />,
+		headerLeft: <Recarga boolean={false} />
 	}
 
-	async auxiliar() {
-		try {
-			console.log(1);
-			console.log('==============================================================');
-			const secciones = await this.buscarSecciones();
-			console.log(2);
-			console.log('==============================================================');
-			console.log(secciones);
-			console.log('==============================================================');
-			const promesas = await this.helper(secciones);
-			console.log(3);
-			console.log('==============================================================');
-			console.log(secciones);
-			console.log('==============================================================');
-			const profesores = await this.buscarProfesores(promesas);
-			console.log(3);
-			console.log('==============================================================');
-			console.log(profesores);
-			console.log('==============================================================');
-			const data = await this.armarSnapshot(secciones, profesores);
-			console.log(4);
-			console.log('==============================================================');
-			console.log(data);
-			console.log('==============================================================');
-			return data;
-		} catch (error) {
-			console.log(error);
+	state = { cargando: true, data: [] }
+
+	componentDidMount() {
+		// Cada estudiante en datos-ausencias tiene un array por sección
+		// Cada array tiene la fecha y hora de la ausencia, además del nombre de la sección
+		const { profesor } = this.props.datos.data;
+		if (profesor) {
+			this.cargarDatosProfesor();
+		} else {
+			this.cargarDatosEstudiante();
 		}
 	}
 
-	async buscarSecciones() {
-		try {
-			const usuario = firebase.auth().currentUser.uid;
-			console.log(5);
-			console.log('==============================================================');
-			console.log(usuario);
-			console.log('==============================================================');
-			let secciones;
-			await firebase.database().ref(`/Usuarios/${usuario}`)
-				.once('value').then(async snapshot => {
-					console.log(6);
-					console.log('==============================================================');
-					console.log(snapshot.val().secciones);
-					console.log('==============================================================');
-					secciones = await snapshot.val().secciones;
-				});
-			console.log(7);
-			console.log('==============================================================');
-			console.log(secciones);
-			console.log('==============================================================');
-			return secciones;
-		} catch (error) {
-			console.log(error);
+	componentWillReceiveProps(nextProps) {
+		const { profesor } = this.props.datos.data;
+		if (nextProps.recargaAusencias === 'ausencias') {
+			this.setState({ cargando: true });
+			if (profesor) {
+				this.cargarDatosProfesor();
+			} else {
+				this.cargarDatosEstudiante();
+			}
 		}
 	}
 
-	async helper(secciones) {
-		let promises1 = [];
-  secciones.forEach((seccion) => {
-    promises1.push(firebase.database().ref(`/Secciones/${seccion.codigo}`).once('value'));
-  });
-
-  await Promise.all(promises1)
-    .then((results) => {
-      let promises2 = [];
-      results.forEach((result) => {
-        promises2.push(result.val().profesor);
-      });
-      return promises2;
-    })
-    .catch((error) => {
-      console.log(error);
-      return [];
-    });
+	cargarDatosProfesor() {
+		const { user } = this.props.datos.data;
+		firebase.database().ref(`/Usuarios/${user.uid}`)
+		.once('value')
+		.then(async (snapshotUsuario) => {
+			const secciones = snapshotUsuario.val().datos.secciones;
+			const profesor = snapshotUsuario.val().nombre;
+			const data = [];
+			for (let i = 0; i < secciones.length; i++) {
+				await firebase.database().ref(`/Secciones/${secciones[i]}`)
+				.once('value')
+				.then((snapshotSeccion) => {
+					let estudiantes = [];
+					if (snapshotSeccion.val().estudiantes) {
+						estudiantes = snapshotSeccion.val().estudiantes;
+					}
+					const dias = snapshotSeccion.val().horario.dias;
+					const hora = snapshotSeccion.val().horario.hora;
+					data.push({
+						seccion: secciones[i],
+						profesor,
+						dias,
+						hora
+					});
+				})
+				.catch((error) => console.log(error));
+			}
+			this.setState({ cargando: false, data });
+		})
+		.catch((error) => console.log(error));
 	}
 
-	async buscarProfesores(promesas) { // 0212-4284163 
-		let promises1 = [];
-		promesas.forEach((profesor) => {
-			promises1.push(firebase.database().ref(`/Secciones/${profesor}`).once('value'));
-		});
+	cargarDatosEstudiante() {
+		const { user } = this.props.datos.data;
+		firebase.database().ref(`/Usuarios/${user.uid}`)
+		.once('value')
+		.then(async (userSnapshot) => {
+			if (userSnapshot.val().datos && userSnapshot.val().datos.ausencias) {
+				const secciones = Object.keys(userSnapshot.val().datos.ausencias);
+				const datos = [];
+				for (let i = 0; i < secciones.length; i++) {	
+					const detalles = userSnapshot.val().datos.ausencias[secciones[i]];
+					const numAusencias = detalles.length;
+					await firebase.database().ref(`/Secciones/${secciones[i]}`)
+					.once('value')
+					.then(async (snapshotSeccion) => {
+						let profesor = snapshotSeccion.val().profesor;
+						await firebase.database().ref(`/Usuarios/${profesor}`)
+						.once('value')
+						.then((snapshotProfesor) => {
+							profesor = snapshotProfesor.val().nombre;
+							datos.push({
+								seccion: secciones[i],
+								profesor,
+								numero: numAusencias,
+								detalles
+							});
+						})
+						.catch((error) => console.log(error));
+					})
+					.catch((error) => console.log(error));
+				}
+				this.setState({ cargando: false, data: datos });
+			} else {
+				this.setState({ cargando: false });
+			}
+		})
+		.catch((error) => console.log(error));
+	}
 
-		await Promise.all(promises1)
-			.then((results) => {
-				let nombreProfesores = [];
-				results.forEach((result) => {
-					nombreProfesores.push(result.val().profesor);
-				});
-				return nombreProfesores;
-			})
-			.catch((error) => {
-				console.log(error);
-				return [];
+	click(ausencia) {
+		const { profesor } = this.props.datos.data;
+		if (!profesor) {
+			this.props.navigation.navigate('DetallesAusencia', {
+				codigo: ausencia.seccion,
+				detalles: ausencia.detalles
 			});
-	}
-
-	async armarSnapshot(secciones, profesores) {
-		console.log(11);
-		console.log('==============================================================');
-		console.log(secciones);
-		console.log('==============================================================');
-		console.log(12);
-		console.log('==============================================================');
-		console.log(profesores);
-		console.log('==============================================================');
-		const datos = [];
-		if (secciones.length === profesores.length) {
-			let i = secciones.length;
-			for (i; i >= 0; i--) {
-				const data = {
-					codigo: secciones[i].codigo,
-					profesor: profesores[i],
-					inasistencias: secciones[i].inasistencias
-				};
-				console.log(13);
-				console.log('==============================================================');
-				console.log(data);
-				console.log('==============================================================');
-				datos.push(data);
-			}
+		} else {
+			this.props.navigation.navigate('ListaEstudiantes', {
+				codigo: ausencia.seccion
+			});
 		}
-		console.log(14);
-		console.log('==============================================================');
-		console.log(datos);
-		console.log('==============================================================');
-		return datos;
 	}
 
-	prepararDatos() {
-		const datos = _.map(this.state.snapshot, (o) => {
-			return {
-				codigo: o.codigo,
-				profesor: o.profesor,
-				inasistencias: o.inasistencias
-			};
-		});
-		return datos;
+	data() {
+		return this.state.data;
 	}
 
-	generadorLista() {
-		if (!this.state.cargando) {
-			return ( 
-			<FlatList 
-				numColumns={1}
-				data={this.prepararDatos()}
-				keyExtractor={(item) => item.seccion}
-				renderItem={({ item }) =>
-					<Ausencia
-					codigo={item.codigo}
-					profesor={item.profesor}
-					inasistencias={item.inasistencias}
-					onPress={() => this.onClick(item)}
-					/>}
-			/>);
-			}
+	render() {
+		const { profesor } = this.props.datos.data;
+		if (this.state.cargando) {
 			return <Spinner tamano={'small'} />;
 		}
-
-		render() {
-			return (<View>{this.generadorLista()}</View>);
-		}
+		return (
+			<FlatList
+				data={this.data()}
+				keyExtractor={(item) => item.seccion}
+				renderItem={({ item }) =>
+				<Ausencia
+					esDocente={profesor}
+					seccion={item.seccion}
+					profesor={item.profesor}
+					numero={item.numero}
+					detalles={item.detalles}
+					hora={item.hora}
+					dias={item.dias}
+					onPress={() => this.click(item)}
+				/>}
+			/>
+		);
 	}
+}
 
-	const mapStateToProps = state => {
-		return {
-			datos: state
-		};
-	};
+const mapStateToProps = state => {
+	if (state.reload === null) {
+		return { datos: state };
+	}
+	return { datos: state, recargaAusencias: state.reload.cargando };
+};
 
-	export default connect(mapStateToProps)(Ausencias);
+export default connect(mapStateToProps)(Ausencias);
