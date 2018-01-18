@@ -9,12 +9,13 @@ import firebase from 'firebase';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import Expo from 'expo-server-sdk';
+import axios from 'axios';
 import { Boton } from './reusables';
 import { recargarListaEstudiantes } from '../acciones';
 
 class MarcarAusencia extends Component {
 	static navigationOptions = ({ navigation }) => ({
+		headerTintColor: '·rgb(2, 121, 255)',
 		headerTitle: (
 			<View style={{ alignSelf: 'center', alignItems: 'center' }}>
 				<Text style={estilos.texto2}>Marcar Ausencia</Text>
@@ -94,35 +95,8 @@ class MarcarAusencia extends Component {
 
 	enviarPushNotification() {
 		const { estudiante } = this.props.navigation.state.params;
-		const expo = new Expo();
+		
 
-		firebase.database().ref(`/Usuarios/${estudiante.codigo}`)
-		.once('value')
-		.then((snapshotEstudiante) => {
-			const pushToken = snapshotEstudiante.val().token;
-			if (Expo.isExpoPushToken(pushToken)) {
-				const messages = [];
-
-				messages.push({
-					to: pushToken,
-					sound: 'default',
-					body: 'This is a test notification'
-				});
-				const chunks = expo.chunkPushNotifications(messages);
-
-				(async () => {
-					for (const chunk of chunks) {
-						try {
-							const receipts = await expo.sendPushNotificationsAsync(chunk);
-							console.log(receipts);
-						} catch (error) {
-							console.log(error);
-						}
-					}
-				})();
-			}
-		})
-		.catch((error) => console.log(error));
 	}
 
 	generarHorario({ horario }) {
