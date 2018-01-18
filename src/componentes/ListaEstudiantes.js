@@ -6,6 +6,7 @@ import {
 	Text,
 	View
 } from 'react-native';
+import { connect } from 'react-redux';
 import firebase from 'firebase';
 import { Spinner } from './reusables';
 import Estudiante from './Estudiante';
@@ -31,6 +32,17 @@ class ListaEstudiantes extends Component {
 	state = { cargando: true, data: [] }
 
 	componentDidMount() {
+		this.cargarDatos();
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.recargaListaEstudiantes === 'listaEstudiantes') {
+			this.setState({ cargando: true, data: [] });
+			this.cargarDatos();
+		}
+	}
+
+	cargarDatos() {
 		const { codigo } = this.props.navigation.state.params;
 		firebase.database().ref(`/Secciones/${codigo}`)
 		.once('value')
@@ -38,15 +50,25 @@ class ListaEstudiantes extends Component {
 			if (snapshotSeccion.val().estudiantes) {
 				const estudiantes = snapshotSeccion.val().estudiantes;
 				const data = [];
+				const horario = snapshotSeccion.val().horario;
 				for (let i = 0; i < estudiantes.length; i++) {
 					await firebase.database().ref(`/Usuarios/${estudiantes[i]}`)
 					.once('value')
 					.then((snapshotEstudiante) => {
-						const num = snapshotEstudiante.val().datos.ausencias[estudiantes[i]].length;
+						let num;
+						if (snapshotEstudiante.val().datos &&
+							snapshotEstudiante.val().datos.ausencias
+							&& snapshotEstudiante.val().datos.ausencias[codigo]) {	
+							num = snapshotEstudiante.val().datos.ausencias[codigo].length;
+						} else {
+							num = 0;
+						}
 						data.push({
 							nombre: snapshotEstudiante.val().nombre,
 							codigo: estudiantes[i],
-							numero: num
+							seccion: codigo,
+							numero: num,
+							horario
 						});
 					})
 					.catch((error) => console.log(error));
@@ -103,4 +125,11 @@ const estilos = {
 	},
 };
 
-export default ListaEstudiantes;
+const mapStateToProps = state => {
+	if (state.reload === null) {
+		return { datos: state };
+	}
+	return { datos: state, recargaListaEstudiantes: state.reload.cargando };
+};
+
+export default connect(mapStateToProps)(ListaEstudiantes);
