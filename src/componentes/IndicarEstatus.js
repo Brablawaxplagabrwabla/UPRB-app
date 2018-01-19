@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, TouchableHighlight } from 'react-native';
+import { View, Text, Image, TouchableHighlight, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import firebase from 'firebase';
 import moment from 'moment';
@@ -170,13 +170,13 @@ const estilos = {
 		width: 108
 	},
 	textoPrincipal: {
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		color: '#rgb(159, 162, 164)',
 		fontSize: 19,
 		paddingBottom: 7
 	},
 	textoIcono: {
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		color: '#rgb(202, 203, 205)',
 		fontSize: 12,
 		fontWeight: '500'

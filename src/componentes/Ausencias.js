@@ -16,7 +16,7 @@ class Ausencias extends Component {
 	static navigationOptions = {
 		headerTitle: <HeaderAusencia />,
 		headerStyle: {
-		marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 20,
+		marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 		backgroundColor: '#rgb(247, 247, 247)',
 		marginBottom: 8
 	},

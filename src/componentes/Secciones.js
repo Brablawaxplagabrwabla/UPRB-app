@@ -26,7 +26,7 @@ class Secciones extends Component {
 			</View>
 		),
 		headerStyle: {
-			marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 20,
+			marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 			backgroundColor: '#rgb(247, 247, 247)',
 			marginBottom: 8
 		},
@@ -288,14 +288,14 @@ class Secciones extends Component {
 const estilos = {
 	texto1: {
 		fontSize: 18,
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		fontWeight: '400',
 		color: '#rgb(154, 157, 159)',
 		alignSelf: 'center'	
 	},
 	texto2: {
 		fontSize: 17,
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		fontWeight: '400',
 		color: '#rgb(154, 157, 159)'
 	},
@@ -323,13 +323,13 @@ const estilos = {
 		marginBottom: 5
 	},
 	tituloModal: {
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		fontSize: 18,
 		fontWeight: '500',
 		color: '#rgb(111, 111, 111)'
 	},
 	subtituloModal: {
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		fontSize: 13,
 		fontWeight: '200',
 		color: '#rgb(178, 178, 178)'
@@ -346,13 +346,13 @@ const estilos = {
 		borderRadius: 7
 	},
 	textoBotonSuscribirse: {
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		fontSize: 16,
 		fontWeight: '500',
 		color: '#rgb(77, 162, 255)'
 	},
 	textoBotonCancelar: {
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		fontSize: 16,
 		color: '#rgb(77, 162, 255)'
 	},

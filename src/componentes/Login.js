@@ -160,7 +160,7 @@ const estilos = {
 		height: 76
 	},
 	textoOlvido: {
-		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Open Sans',
+		fontFamily: Platform.OS === 'android' ? 'Roboto': 'Helvetica',
 		color: '#bebebe',
 		fontSize: 14,
 		opacity: 0.8,

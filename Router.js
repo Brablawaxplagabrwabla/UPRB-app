@@ -75,13 +75,13 @@ const Navegador = StackNavigator({
               headerTintColor: '#rgb(137, 174, 214)',
               headerTitleStyle: {
                 fontSize: 18,
-                fontFamily: 'Roboto',
+                fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
                 fontWeight: '400',
                 color: '#rgb(154, 157, 159)',
                 alignSelf: 'center'
               },
               headerStyle: {
-                marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 20,
+                marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
                 backgroundColor: '#rgb(247, 247, 247)',
                 marginBottom: 8
               },
@@ -107,13 +107,13 @@ const Navegador = StackNavigator({
               headerTitle: 'Departamentos',
               headerTitleStyle: {
                 fontSize: 18,
-                fontFamily: 'Roboto',
+                fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
                 fontWeight: '400',
                 color: '#rgb(154, 157, 159)',
                 alignSelf: 'center'
               },
               headerStyle: {
-                marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 20,
+                marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
                 backgroundColor: '#rgb(247, 247, 247)',
                 marginBottom: 8
               }
@@ -125,13 +125,13 @@ const Navegador = StackNavigator({
               headerTitle: 'Clases',
               headerTitleStyle: {
                 fontSize: 18,
-                fontFamily: 'Roboto',
+                fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
                 fontWeight: '400',
                 color: '#rgb(154, 157, 159)',
                 alignSelf: 'center'
               },
               headerStyle: {
-                marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 20,
+                marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
                 backgroundColor: '#rgb(247, 247, 247)',
                 marginBottom: 8
               },
@@ -195,7 +195,7 @@ const Navegador = StackNavigator({
         },
         labelStyle: {
           fontSize: 12,
-          fontFamily: 'Roboto',
+          fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
           fontWeight: '500'
         }
       }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Text, View } from 'react-native';
+import { Image, Text, View, Platform } from 'react-native';
 import { ContenedorLista } from './reusables';
 import flecha from '../assets/flecha.png';
 
@@ -29,7 +29,7 @@ const estilos = {
 	},
 	texto: {
 		paddingLeft: '7%',
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		fontSize: 17,
 		color: '#rgb(154, 157, 159)'
 	},

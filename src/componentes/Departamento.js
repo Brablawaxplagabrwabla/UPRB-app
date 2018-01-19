@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableWithoutFeedback, Image } from 'react-native';
+import { View, Text, TouchableWithoutFeedback, Image, Platform } from 'react-native';
 
 const Departamento = ({ icono, titulo, onPress }) => {
 	return (
@@ -52,7 +52,7 @@ const estilos = {
 		alignSelf: 'center',
 		textAlign: 'center',
 		color: '#rgb(181, 184, 185)',
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		fontSize: 12
 	}
 };

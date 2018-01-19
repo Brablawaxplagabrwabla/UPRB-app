@@ -16,7 +16,7 @@ const estilos = {
 		alignItems: 'center',
 		justifyContent: 'center',
 		flexDirection: 'column',
-		marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 20
+		marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
 	}
 };
 

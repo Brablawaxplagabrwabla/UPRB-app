@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {
 	Text,
 	View,
-	Image
+	Image,
+	Platform
 } from 'react-native';
 import { Boton2 } from './reusables';
 
@@ -106,7 +107,7 @@ const estilos = {
 		alignSelf: 'center'
 	},
 	textoSuscrito: {
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		fontSize: 12,
 		color: '#rgb(190, 192, 193)'
 	},

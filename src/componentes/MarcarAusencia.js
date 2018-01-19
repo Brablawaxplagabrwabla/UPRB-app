@@ -25,7 +25,7 @@ class MarcarAusencia extends Component {
 			</View>
 		),
 		headerStyle: {
-			marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 20,
+			marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 			backgroundColor: '#rgb(247, 247, 247)',
 			marginBottom: 8
 		},
@@ -255,20 +255,20 @@ const estilos = {
 	},
 	texto1: {
 		fontSize: 16,
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		fontWeight: '500',
 		color: '#rgb(154, 157, 159)',
 		alignSelf: 'center'	
 	},
 	texto2: {
 		fontSize: 17,
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		fontWeight: '400',
 		color: '#rgb(154, 157, 159)'
 	},
 	texto: {
 		fontSize: 20,
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		color: '#rgb(170, 172, 174)'
 	}
 };

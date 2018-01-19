@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Platform } from 'react-native';
 
 const DetallesAusencia = ({ fecha, hora }) => {
 	return (
@@ -35,7 +35,7 @@ const estilos = {
 	},
 	texto: {
 		fontSize: 18,
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		color: '#rgb(156, 159, 161)',
 		paddingBottom: 5
 	}

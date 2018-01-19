@@ -13,13 +13,13 @@ class ListaEstatus extends Component {
 		headerTitle: moment().format('D [de] MMMM YYYY, dddd'),
 		headerTitleStyle: {
 			fontSize: 18,
-			fontFamily: 'Roboto',
+			fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 			fontWeight: '400',
 			color: '#rgb(154, 157, 159)',
 			alignSelf: 'center'
 		},
 		headerStyle: {
-			marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 20,
+			marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 			backgroundColor: '#rgb(247, 247, 247)',
 			marginBottom: 8
 		},

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, Keyboard } from 'react-native';
+import { View, Text, Image, Keyboard, Platform } from 'react-native';
 import firebase from 'firebase';
 import { Contenedor, Input, Boton, Spinner } from './reusables/';
 // import Logo from '../assets/ico_uprb.png';
@@ -120,7 +120,7 @@ const estilos = {
 		alignSelf: 'center',
 		fontSize: 16,
 		fontWeight: '400',
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		color: '#rgb(189, 191, 192)',
 		flex: 4
 	},

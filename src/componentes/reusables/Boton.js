@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Text } from 'react-native';
+import { TouchableOpacity, Text, Platform } from 'react-native';
 
 const Boton = ({ children, onPress }) => {
 	return (
@@ -25,7 +25,7 @@ const estilos = {
 	texto: {
 		color: '#fff',
 		fontSize: 16,
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		fontWeight: '400',
 		alignSelf: 'center',
 		paddingTop: 12,

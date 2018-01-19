@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput, Text, View } from 'react-native';
+import { TextInput, Text, View, Platform } from 'react-native';
 
 const Input = ({ placeholder, onChangeText, label, value, secure }) => {
 	return (
@@ -45,7 +45,7 @@ const estilos = {
 	etiqueta: {
 		flex: 4,
 		paddingLeft: 6,
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		color: 'rgb(190, 192, 193)',
 		fontWeight: '300',
 		fontSize: 14

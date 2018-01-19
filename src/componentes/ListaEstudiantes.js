@@ -22,7 +22,7 @@ class ListaEstudiantes extends Component {
 			</View>
 		),
 		headerStyle: {
-			marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 20,
+			marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 			backgroundColor: '#rgb(247, 247, 247)',
 			marginBottom: 8
 		},
@@ -112,14 +112,14 @@ class ListaEstudiantes extends Component {
 const estilos = {
 	texto1: {
 		fontSize: 18,
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		fontWeight: '400',
 		color: '#rgb(154, 157, 159)',
 		alignSelf: 'center'	
 	},
 	texto2: {
 		fontSize: 17,
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		fontWeight: '400',
 		color: '#rgb(154, 157, 159)'
 	},

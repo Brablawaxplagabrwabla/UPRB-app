@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Text, View } from 'react-native';
+import { Image, Text, View, Platform } from 'react-native';
 import { Boton2, ContenedorLista } from './reusables';
 import flecha from '../assets/flecha.png';
 
@@ -106,19 +106,19 @@ const estilos = {
 		alignItems: 'flex-end'
 	},
 	textoSeccion: {
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		color: '#rgb(165, 168, 169)',
 		fontSize: 18
 	},
 	textoProfesor: {
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		color: '#rgb(165, 168, 169)',
 		fontSize: 12,
 		fontWeight: '400'
 	},
 	numero: {
 		fontSize: 20,
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		color: '#rgb(180, 182, 184)'
 	},
 	icono: {

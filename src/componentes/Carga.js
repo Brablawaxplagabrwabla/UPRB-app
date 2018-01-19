@@ -106,7 +106,7 @@ const estilos = {
 		fontSize: 16,
 		fontWeight: '300',
 		color: 'rgb(159, 162, 164)',
-		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Open Sans',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		opacity: 0.75
 	}
 };

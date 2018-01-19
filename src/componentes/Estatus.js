@@ -2,7 +2,8 @@ import React from 'react';
 import {
 	Text,
 	View,
-	Image
+	Image,
+	Platform
 } from 'react-native';
 import { ContenedorLista } from './reusables/';
 
@@ -109,31 +110,31 @@ const estilos = {
 		paddingBottom: 10
 	},
 	textoSeccion: {
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		color: '#rgb(165, 168, 169)',
 		fontSize: 18
 	},
 	textoProfesor: {
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		color: '#rgb(165, 168, 169)',
 		fontSize: 12,
 		fontWeight: '400'
 	},
 	textoDias: {
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		color: '#rgb(165, 168, 169)',
 		fontSize: 11,
 		fontWeight: '200',
 		alignSelf: 'center'
 	},
 	textoHora: {
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		color: '#rgb(165, 168, 169)',
 		fontSize: 20,
 		alignSelf: 'center'
 	},
 	textoIcono: {
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		color: '#rgb(165, 168, 169)',
 		fontSize: 8,
 		alignSelf: 'center',

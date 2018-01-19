@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, TouchableWithoutFeedback, Platform } from 'react-native';
 
 const Clase = ({ nombre, codigo, onPress }) => {
 	return (
@@ -32,7 +32,7 @@ const styles = {
 		alignSelf: 'center',
 		textAlign: 'center',
 		color: '#rgb(181, 184, 185)',
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		fontSize: 17,
 		fontWeight: '400'
 	}

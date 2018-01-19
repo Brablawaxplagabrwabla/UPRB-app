@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Platform } from 'react-native';
 import { connect } from 'react-redux';
 
 class HeaderAusencia extends Component {
@@ -24,7 +24,7 @@ class HeaderAusencia extends Component {
 const estilos = {
 	texto: {
 		fontSize: 18,
-		fontFamily: 'Roboto',
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		fontWeight: '400',
 		color: '#rgb(154, 157, 159)',
 		alignSelf: 'center'

@@ -2,6 +2,11 @@
   "expo": {
   	"name": "UPRB",
     "sdkVersion": "23.0.0",
-    "orientation": "portrait"
+    "orientation": "portrait",
+    "icon": "./assets/ico_uprb.png",
+    "privacy": "public",
+    "notification": {
+      "icon": "./assets/ico_uprb.png"
+    }
   }
 }
