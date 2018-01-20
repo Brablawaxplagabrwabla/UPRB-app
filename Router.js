@@ -17,6 +17,7 @@ import Ausencias from './src/componentes/Ausencias';
 import ListaDetallesAusencia from './src/componentes/ListaDetallesAusencia';
 import ListaEstudiantes from './src/componentes/ListaEstudiantes';
 import MarcarAusencia from './src/componentes/MarcarAusencia';
+import PushNotificationHandler from './src/componentes/PushNotificationHandler';
 
 class Router extends Component {
     render() {
@@ -165,6 +166,9 @@ const Navegador = StackNavigator({
           },
           MarcarAusencia: {
             screen: MarcarAusencia
+          }, 
+          push: {
+            screen: PushNotificationHandler
           }
         }),
         navigationOptions: {
@@ -177,7 +181,7 @@ const Navegador = StackNavigator({
             />
           )
         }
-      }
+      },
     }, {
       tabBarPosition: 'bottom',
       initialRouteName: 'Home', //Temporal
