@@ -70,8 +70,8 @@ class PushNotificationHandler extends React.Component {
   _handleNotification = (notification) => {
     const user = firebase.auth().currentUser;
     if (user) {
-      console.log('FLAG')
-      this.props.navigation.navigate('push');
+      console.log('FLAG');
+      this.props.navigation.navigate('DetallesAusencia');
     }
   };
 

@@ -67,7 +67,7 @@ class MarcarAusencia extends Component {
 				if (!_.find(ausencias, (o) => {
 					return o.fecha === horario.fecha && o.hora === horario.hora;
 				})) {
-					if (estudiante.numero === 2) {
+					if (estudiante.numero >= 2) {
 						this.enviarPushNotification();
 					}
 					ausencias.push({
