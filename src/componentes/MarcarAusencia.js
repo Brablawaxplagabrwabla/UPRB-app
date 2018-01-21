@@ -93,9 +93,10 @@ class MarcarAusencia extends Component {
 		})
 		.catch((error) => console.log(error));
 	}
-
-	enviarPushNotification() {
+	
+	async enviarPushNotification() {
 		const { estudiante } = this.props.navigation.state.params;
+		await this.cargarDatosEstudiante();
 		const push = {
 			header: {
 				'accept': 'application/json',
@@ -107,8 +108,8 @@ class MarcarAusencia extends Component {
 			sound: 'default',
 			body: `${estudiante.nombre}, haz alcanzado el límite de inasistencias`,
 			data: {
-				estudiante: estudiante,
-				status: 'ok'
+				codigo: estudiante.seccion, 
+				detalles: estudiante.detalles
 			}
 		};
 		axios.post('https://exp.host/--/api/v2/push/send', push)

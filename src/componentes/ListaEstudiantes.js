@@ -50,6 +50,7 @@ class ListaEstudiantes extends Component {
 			if (snapshotSeccion.val().estudiantes) {
 				const estudiantes = snapshotSeccion.val().estudiantes;
 				const data = [];
+				let detalles;
 				const horario = snapshotSeccion.val().horario;
 				for (let i = 0; i < estudiantes.length; i++) {
 					await firebase.database().ref(`/Usuarios/${estudiantes[i]}`)
@@ -60,6 +61,7 @@ class ListaEstudiantes extends Component {
 							snapshotEstudiante.val().datos.ausencias
 							&& snapshotEstudiante.val().datos.ausencias[codigo]) {	
 							num = snapshotEstudiante.val().datos.ausencias[codigo].length;
+							detalles = snapshotEstudiante.val().datos.ausencias[codigo];
 						} else {
 							num = 0;
 						}
@@ -68,7 +70,8 @@ class ListaEstudiantes extends Component {
 							codigo: estudiantes[i],
 							seccion: codigo,
 							numero: num,
-							horario
+							horario,
+							detalles
 						});
 					})
 					.catch((error) => console.log(error));

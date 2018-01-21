@@ -104,7 +104,7 @@ class Ausencias extends Component {
 								seccion: secciones[i],
 								profesor,
 								numero: numAusencias,
-								detalles
+								detalles 
 							});
 						})
 						.catch((error) => console.log(error));
