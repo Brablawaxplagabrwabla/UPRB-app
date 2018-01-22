@@ -17,7 +17,6 @@ import Ausencias from './src/componentes/Ausencias';
 import ListaDetallesAusencia from './src/componentes/ListaDetallesAusencia';
 import ListaEstudiantes from './src/componentes/ListaEstudiantes';
 import MarcarAusencia from './src/componentes/MarcarAusencia';
-import PushNotificationHandler from './src/componentes/PushNotificationHandler';
 
 class Router extends Component {
     render() {
@@ -43,12 +42,6 @@ const Navegador = StackNavigator({
     navigationOptions: {
       header: null
     },
-  },
-  push: {
-    screen: PushNotificationHandler,
-    navigationOptions: {
-      header: null
-    }
   },
   Login: {
     screen: Login,

@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import firebase from 'firebase';
+import { Notifications } from 'expo';
 import Ausencia from './Ausencia';
 import HeaderAusencia from './HeaderAusencia';
 import Recarga from './Reload';
@@ -35,6 +36,26 @@ class Ausencias extends Component {
 		} else {
 			this.cargarDatosEstudiante();
 		}
+		// Notification Listener
+		Notifications.addListener((notification) => {
+			console.log('Flag 1');
+			console.log(notification);
+			if (notification.origin === 'selected') {
+				console.log('Flag 2');
+				console.log(notification.data);
+				const user = firebase.auth().currentUser;
+				if (user) {
+					console.log('Flag 3');
+					this.setState({ notification });
+					this.props.navigation.navigate('DetallesAusencia', {
+						codigo: notification.data.seccion,
+						detalles: notification.data.detalles
+					});
+				} else {
+					this.props.navigation.navigate('Home');
+				}
+			}
+		});
 	}
 
 	componentWillReceiveProps(nextProps) {
