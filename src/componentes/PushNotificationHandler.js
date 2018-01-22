@@ -19,11 +19,12 @@ class PushNotificationHandler extends React.Component {
     this.registerForPushNotificationsAsync();
 
     Notifications.addListener((notification) => {
+      console.log('AJAAAAA');
       const user = firebase.auth().currentUser;
       if (user) {
         console.log('FLAG');
         this.setState({ notification });
-        this.props.navigation.navigate('DetallesAusencia', {
+        this.props.navigation.navigate('Main/DetallesAusencia', {
           codigo: notification.data.seccion,
           detalles: notification.data.detalles
         });
@@ -75,10 +76,7 @@ class PushNotificationHandler extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Origin: {this.state.notification.origin}</Text>
-        <Text>Data: {JSON.stringify(this.state.notification.data)}</Text>
-      </View>
+      <View />
     );
   }
 }

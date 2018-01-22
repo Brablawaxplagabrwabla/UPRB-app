@@ -72,7 +72,8 @@ class MarcarAusencia extends Component {
 					}
 					ausencias.push({
 						fecha: horario.fecha,
-						hora: horario.hora
+						hora: horario.hora,
+						token: snapshotEstudiante.val().token
 					});
 				}
 				firebase.database().ref(`/Usuarios/${estudiante.codigo}/datos/ausencias/${estudiante.seccion}`)
@@ -96,7 +97,6 @@ class MarcarAusencia extends Component {
 	
 	async enviarPushNotification() {
 		const { estudiante } = this.props.navigation.state.params;
-		await this.cargarDatosEstudiante();
 		const push = {
 			header: {
 				'accept': 'application/json',

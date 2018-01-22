@@ -44,6 +44,12 @@ const Navegador = StackNavigator({
       header: null
     },
   },
+  push: {
+    screen: PushNotificationHandler,
+    navigationOptions: {
+      header: null
+    }
+  },
   Login: {
     screen: Login,
     navigationOptions: {
@@ -167,9 +173,6 @@ const Navegador = StackNavigator({
           MarcarAusencia: {
             screen: MarcarAusencia
           }, 
-          push: {
-            screen: PushNotificationHandler
-          }
         }),
         navigationOptions: {
           tabBarLabel: 'Ausencias',
