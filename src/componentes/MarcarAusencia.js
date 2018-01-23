@@ -63,7 +63,6 @@ class MarcarAusencia extends Component {
 				snapshotEstudiante.val().datos.ausencias &&
 				snapshotEstudiante.val().datos.ausencias[estudiante.seccion]) {
 				const ausencias = snapshotEstudiante.val().datos.ausencias[estudiante.seccion];
-				this.enviarPushNotificationAux();
 				if (!_.find(ausencias, (o) => {
 					return o.fecha === horario.fecha && o.hora === horario.hora;
 				})) {
@@ -118,35 +117,6 @@ class MarcarAusencia extends Component {
 		})
 		.catch(error => {
 			console.log(error);
-		});
-	}
-
-	enviarPushNotificationAux() {
-		const UserID = firebase.auth().currentUser.uid;
-		firebase.database().ref(`/Usuarios/${UserID}`).on('value', async (snapshot) => {
-			const user = await snapshot.val();
-			const push = {
-				header: {
-					'accept': 'application/json',
-					'accept-encoding': 'gzip, deflate',
-					'content-type': 'application/json'
-				},
-				to: user.token,
-				tiitle: 'Alerta de Inasistencias',
-				sound: 'default',
-				body: `${user.nombre}, haz alcanzado el límite de inasistencias`,
-				data: {
-					estudiante: user,
-					status: 'ok'
-				}
-			};
-			axios.post('https://exp.host/--/api/v2/push/send', push)
-			.then(response => {
-				console.log(response);
-			})
-			.catch(error => {
-				console.log(error);
-			});
 		});
 	}
 

@@ -108,7 +108,7 @@ const estilos = {
 	textoSeccion: {
 		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		color: '#rgb(165, 168, 169)',
-		fontSize: 18
+		fontSize: 16
 	},
 	textoProfesor: {
 		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
