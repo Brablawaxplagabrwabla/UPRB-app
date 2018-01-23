@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { FlatList, Platform, StatusBar, View } from 'react-native';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import firebase from 'firebase';
 import { Spinner } from './reusables/';
+import moment from '../assets/moment/moment';
 import Recarga from './Reload';
 import Estatus from './Estatus';
 

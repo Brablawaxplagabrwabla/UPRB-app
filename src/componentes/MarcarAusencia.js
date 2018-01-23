@@ -6,16 +6,16 @@ import {
 	View
 } from 'react-native';
 import firebase from 'firebase';
-import moment from 'moment';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import axios from 'axios';
+import moment from '../assets/moment/moment';
 import { Boton } from './reusables';
 import { recargarListaEstudiantes } from '../acciones';
 
 class MarcarAusencia extends Component {
 	static navigationOptions = ({ navigation }) => ({
-		headerTintColor: '·rgb(2, 121, 255)',
+		headerTintColor: '#rgb(2, 121, 255)',
 		headerTitle: (
 			<View style={{ alignSelf: 'center', alignItems: 'center' }}>
 				<Text style={estilos.texto2}>Marcar Ausencia</Text>

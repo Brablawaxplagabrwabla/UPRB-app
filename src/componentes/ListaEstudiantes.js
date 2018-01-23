@@ -21,6 +21,7 @@ class ListaEstudiantes extends Component {
 				</Text>
 			</View>
 		),
+		headerTintColor: '#rgb(2, 121, 255)',
 		headerStyle: {
 			marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 			backgroundColor: '#rgb(247, 247, 247)',

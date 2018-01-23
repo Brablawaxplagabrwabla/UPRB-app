@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, Image, TouchableHighlight, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import firebase from 'firebase';
-import moment from 'moment';
+import moment from '../assets/moment/moment';
 
 class IndicarEstatus extends Component {
 	auxiliarDias(dia) {

@@ -72,7 +72,7 @@ const Navegador = StackNavigator({
             screen: IndicarEstatus,
             navigationOptions: {
               headerTitle: 'Detalles',
-              headerTintColor: '#rgb(137, 174, 214)',
+              headerTintColor: '#rgb(2, 121, 255)',
               headerTitleStyle: {
                 fontSize: 18,
                 fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
@@ -123,6 +123,7 @@ const Navegador = StackNavigator({
             screen: Clases,
             navigationOptions: {
               headerTitle: 'Clases',
+              headerTintColor: '#rgb(2, 121, 255)',
               headerTitleStyle: {
                 fontSize: 18,
                 fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
