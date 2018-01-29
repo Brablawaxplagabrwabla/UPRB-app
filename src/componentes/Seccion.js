@@ -32,7 +32,7 @@ class Seccion extends Component {
 			<View style={estilos.contenedorPrincipal}>
 				<View style={estilos.contenedorTexto}>
 					<Text style={estilos.textoSeccion}>{this.props.codigo}</Text>
-					<Text style={estilos.textoProfesor}>{this.props.profesor}</Text>
+					<Text style={estilos.textoProfesor}>{`Profesor/${this.props.profesor}`}</Text>
 				</View>
 				<View style={estilos.contenedorHorario}>
 					<Text style={estilos.horarioHoras}>{this.props.hora}</Text>
@@ -87,7 +87,7 @@ const estilos = {
 	textoProfesor: {
 		paddingLeft: 17,
 		fontSize: 12,
-		color: '#rgb(203, 205, 206)'
+		color: '#rgb(193, 195, 196)'
 	},
 	horarioHoras: {
 		fontSize: 19,
@@ -95,7 +95,7 @@ const estilos = {
 	},
 	horarioDias: {
 		fontSize: 13,
-		color: '#rgb(207, 208, 209)'
+		color: '#rgb(193, 195, 196)'
 	},
 	textoImagen: {
 		fontSize: 10,

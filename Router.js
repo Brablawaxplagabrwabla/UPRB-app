@@ -1,3 +1,4 @@
+// Importa todos los componentes (Screen) de la App
 import React, { Component } from 'react';
 import { Image, Platform, StatusBar, View } from 'react-native';
 import { StackNavigator, TabNavigator } from 'react-navigation';
@@ -19,9 +20,9 @@ import ListaEstudiantes from './src/componentes/ListaEstudiantes';
 import MarcarAusencia from './src/componentes/MarcarAusencia';
 
 class Router extends Component {
-    render() {
-      return <Navegador />;
-    }
+  render() {
+    return <Navegador />;
+  }
 }
 
 /* Estructura de navegación:
@@ -83,8 +84,9 @@ const Navegador = StackNavigator({
               headerStyle: {
                 marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
                 backgroundColor: '#rgb(247, 247, 247)',
-                marginBottom: 8
+                marginBottom: Platform.OS === 'android' ? 8 : 0
               },
+              headerBackTitle: null,
               headerRight: <View />
             }
           }
@@ -112,10 +114,11 @@ const Navegador = StackNavigator({
                 color: '#rgb(154, 157, 159)',
                 alignSelf: 'center'
               },
+              headerBackTitle: null,
               headerStyle: {
                 marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
                 backgroundColor: '#rgb(247, 247, 247)',
-                marginBottom: 8
+                marginBottom: Platform.OS === 'android' ? 8 : 0
               }
             }
           },
@@ -134,8 +137,9 @@ const Navegador = StackNavigator({
               headerStyle: {
                 marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
                 backgroundColor: '#rgb(247, 247, 247)',
-                marginBottom: 8
+                marginBottom: Platform.OS === 'android' ? 8 : 0
               },
+              headerBackTitle: null,
               headerRight: <View />
             }
           },

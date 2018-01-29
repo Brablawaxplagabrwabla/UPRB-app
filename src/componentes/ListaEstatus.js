@@ -21,7 +21,7 @@ class ListaEstatus extends Component {
 		headerStyle: {
 			marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 			backgroundColor: '#rgb(247, 247, 247)',
-			marginBottom: 8
+			marginBottom: Platform.OS === 'android' ? 8 : 0
 		},
 		headerLeft: <Recarga boolean />,
 		headerRight: <View />
@@ -49,6 +49,7 @@ class ListaEstatus extends Component {
 		.then(async (user) => {
 			let secciones;
 			if (user.val().datos !== null && user.val().datos !== undefined) {
+				// Verificar que el usuario este inscrito en un clase
 				secciones = user.val().datos.secciones;
 			} else {
 				secciones = null;

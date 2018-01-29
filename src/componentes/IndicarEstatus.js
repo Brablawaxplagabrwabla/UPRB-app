@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { View, Text, Image, TouchableHighlight, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import firebase from 'firebase';
-import moment from '../assets/moment/moment';
+// Moment.js es una libreria para el manejo del tiempo en js
+import moment from '../assets/moment/moment'; 
 
 class IndicarEstatus extends Component {
 	auxiliarDias(dia) {
@@ -30,7 +31,7 @@ class IndicarEstatus extends Component {
 		const { seccion } = this.props.navigation.state.params;
 
 		firebase.database().ref(`/Secciones/${seccion.seccion}`)
-		.update({ estatus: 'En Curso' })
+		.update({ estatus: 'En Curso' }) // actualiza el status de la clase
 		.then(() => this.props.navigation.goBack())
 		.catch((error) => console.log(error));
 	}
@@ -56,19 +57,20 @@ class IndicarEstatus extends Component {
 	fecha() {
 		const { seccion } = this.props.navigation.state.params;
 
-		if (seccion.dias.length > 3) {
+		if (seccion.dias.length > 3) { 
+			// Verifica a ver si el curso se dicta 1 o 2 por semana
 			const diaUno = seccion.dias.substring(0, 3);
 			const diaDos = seccion.dias.substring(4);
 
 			const fechaUno = moment()
 			.isoWeekday(this.auxiliarDias(diaUno))
-			.format('YYYY-MM-DD') + ' ' + seccion.hora;
+			.format('YYYY-MM-DD') + ' ' + seccion.hora; //Convertimos la fecha en una del tipo AAAA-MM-DD
 
 			const fechaDos = moment()
 			.isoWeekday(this.auxiliarDias(diaDos))
 			.format('YYYY-MM-DD') + ' ' + seccion.hora;
 
-			if (moment(fechaUno).isBefore(moment())) {
+			if (moment(fechaUno).isBefore(moment())) { // Verificamos si es antes de la fecha actual
 				if (moment(fechaDos).isBefore(moment())) {
 					const fecha = moment().isoWeekday(this.auxiliarDias(diaUno)).add(7, 'day');
 					return fecha.format('DD [de] MMMM YYYY');

@@ -25,7 +25,7 @@ class ListaEstudiantes extends Component {
 		headerStyle: {
 			marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 			backgroundColor: '#rgb(247, 247, 247)',
-			marginBottom: 8
+			marginBottom: Platform.OS === 'android' ? 8 : 0
 		},
 		headerRight: <View />
 	})
@@ -60,18 +60,21 @@ class ListaEstudiantes extends Component {
 						let num;
 						if (snapshotEstudiante.val().datos &&
 							snapshotEstudiante.val().datos.ausencias
-							&& snapshotEstudiante.val().datos.ausencias[codigo]) {	
+							&& snapshotEstudiante.val().datos.ausencias[codigo]) {
+							// si(tiene datos Y tiene ausencias Y tiene ausencias en esa materia);	
 							num = snapshotEstudiante.val().datos.ausencias[codigo].length;
 							detalles = snapshotEstudiante.val().datos.ausencias[codigo];
 						} else {
 							num = 0;
 						}
+						// Data nos va a servir para enviar a la proxima ventana lo que necesita para funcionar
 						data.push({
 							nombre: snapshotEstudiante.val().nombre,
 							codigo: estudiantes[i],
 							seccion: codigo,
 							numero: num,
 							horario,
+							token: snapshotEstudiante.val().token,
 							detalles
 						});
 					})

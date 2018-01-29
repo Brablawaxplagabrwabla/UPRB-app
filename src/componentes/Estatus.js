@@ -49,7 +49,7 @@ const Estatus = ({
 				</View>
 				<View style={estilos.contenedorTextoProfesor}>
 					<Text style={estilos.textoProfesor}>
-						{profesor}
+						{`Profesor: ${profesor}`}
 					</Text>
 				</View>
 			</View>

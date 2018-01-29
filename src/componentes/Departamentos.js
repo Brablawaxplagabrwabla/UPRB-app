@@ -10,6 +10,7 @@ class Departamentos extends Component {
 	state = { cargando: true, snapshot: {} }
 	
 	componentDidMount() {
+		// Busca el nombre de los departamentos y su icono
 		firebase.database().ref('/Departamentos')
 			.on('value', (snapshot) => {
 				this.setState({ cargando: false, snapshot: snapshot.val() });

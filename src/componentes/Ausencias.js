@@ -19,7 +19,7 @@ class Ausencias extends Component {
 		headerStyle: {
 		marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 		backgroundColor: '#rgb(247, 247, 247)',
-		marginBottom: 8
+		marginBottom: Platform.OS === 'android' ? 8 : 0
 	},
 		headerRight: <View />,
 		headerLeft: <Recarga boolean={false} />
@@ -38,14 +38,10 @@ class Ausencias extends Component {
 		}
 		// Notification Listener
 		Notifications.addListener((notification) => {
-			console.log('Flag 1');
-			console.log(notification);
 			if (notification.origin === 'selected') {
-				console.log('Flag 2');
-				console.log(notification.data);
 				const user = firebase.auth().currentUser;
+				// Si un usuario Logeado llevalo a Detalle
 				if (user) {
-					console.log('Flag 3');
 					this.setState({ notification });
 					this.props.navigation.navigate('DetallesAusencia', {
 						codigo: notification.data.seccion,
@@ -71,6 +67,7 @@ class Ausencias extends Component {
 	}
 
 	cargarDatosProfesor() {
+		// Busca los datos del profesor, por seccion (Seccion, nombreProf, dia y hora)
 		const { user } = this.props.datos.data;
 		firebase.database().ref(`/Usuarios/${user.uid}`)
 		.once('value')
@@ -103,6 +100,8 @@ class Ausencias extends Component {
 	}
 
 	cargarDatosEstudiante() {
+		// Busca los detalles de las ausencias del estudiante 
+		// (Secciones, nombreProf, Numero y detalles[hora y dia])
 		const { user } = this.props.datos.data;
 		firebase.database().ref(`/Usuarios/${user.uid}`)
 		.once('value')

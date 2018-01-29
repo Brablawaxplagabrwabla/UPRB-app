@@ -11,6 +11,7 @@ class Clases extends Component {
 
 	componentDidMount() {
 		const { nombre } = this.props.navigation.state.params;
+		// Busca las clases por departamento en la DB
 		firebase.database().ref(`/Departamentos/${nombre}`)
 			.on('value', async (dept) => {
 				const clases = dept.val().clases;
@@ -44,6 +45,7 @@ class Clases extends Component {
 		firebase.database().ref(`/Usuarios/${usuario}`)
 		.once('value')
 		.then((usuarioSnapshot) => {
+			// Si es estudiante muestra las seccion por materia
 			if (usuarioSnapshot.val().tipo.toLowerCase() === 'estudiante') {
 				navigate('Secciones', { codigo: clase.codigo });
 			}

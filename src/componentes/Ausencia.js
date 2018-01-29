@@ -23,7 +23,7 @@ const Ausencia = ({
 					</View>
 					<View style={estilos.contenedorTextoProfesor}>
 						<Text style={estilos.textoProfesor}>
-							{profesor}
+							{`Profesor: ${profesor}`}
 						</Text>
 					</View>
 				</View>
@@ -52,7 +52,7 @@ const Ausencia = ({
 				</View>
 				<View style={estilos.contenedorTextoProfesor}>
 					<Text style={estilos.textoProfesor}>
-						{profesor}
+						{`Profesor: ${profesor}`}
 					</Text>
 				</View>
 			</View>
@@ -113,13 +113,13 @@ const estilos = {
 	textoProfesor: {
 		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		color: '#rgb(165, 168, 169)',
-		fontSize: 12,
+		fontSize: 10,
 		fontWeight: '400'
 	},
 	numero: {
 		fontSize: 20,
 		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
-		color: '#rgb(180, 182, 184)'
+		color: '#rgb(170, 172, 174)'
 	},
 	icono: {
 		height: 14,

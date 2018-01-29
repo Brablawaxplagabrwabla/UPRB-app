@@ -21,7 +21,7 @@ class ListaDetallesAusencia extends Component {
 		headerStyle: {
 			marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 			backgroundColor: '#rgb(247, 247, 247)',
-			marginBottom: 8
+			marginBottom: Platform.OS === 'android' ? 8 : 0
 		},
 		headerRight: <View />
 	})

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import firebase from 'firebase';
+import firebase from 'firebase'; // Firebase: PaaS (Auth y DB)
 import {
 	Image,
 	View,
@@ -8,13 +8,14 @@ import {
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { Bar } from 'react-native-progress';
-import Logo from '../assets/ico_uprb.png';
+import Logo from '../assets/ico_uprb.png'; // Icono
 import { Contenedor } from './reusables/';
 
 class Carga extends Component {
 	state = { textoCarga: 'Cargando Datos', progreso: 0 }
 
 	async componentDidMount() {
+		// Datos de configuracion de la app en Firebase
 		const config = {
 			apiKey: 'AIzaSyCeCz0G0rihe4w0vEVM4rbaL0rewZWM_gE',
 			authDomain: 'uprb-app.firebaseapp.com',
@@ -24,8 +25,8 @@ class Carga extends Component {
 			messagingSenderId: '38894349785'
 		};
 		this.setState({ textoCarga: 'Conectando' });
-		await this.esperaEstetica(1000);
-		firebase.initializeApp(config);
+		await this.esperaEstetica(1000); // Hace la carga un poco más lenta
+		firebase.initializeApp(config); // La app se identifica con firebase
 		this.setState({ textoCarga: 'Cargando Iconos' });
 		let num = 0;
 		// Comenta toda esta sección de código para evitar la carga de íconos,
@@ -56,7 +57,7 @@ class Carga extends Component {
 			],
 		}));
 	}
-
+	// devuelve una promesa, que se simplemente realiza un pausa en ms
 	esperaEstetica(ms) {
 		return new Promise(resolve => setTimeout(resolve, ms));
 	}

@@ -29,7 +29,7 @@ class Secciones extends Component {
 		headerStyle: {
 			marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 			backgroundColor: '#rgb(247, 247, 247)',
-			marginBottom: 8
+			marginBottom: Platform.OS === 'android' ? 8 : 0
 		},
 		headerRight: <View />
 	})
@@ -306,6 +306,7 @@ const estilos = {
 		backgroundColor: '#fff',
 		borderRadius: 15,
 		alignSelf: 'center'
+		borderWidth: 0.5
 	},
 	contenedorTextoModal: {
 		flex: 4,
@@ -350,7 +351,7 @@ const estilos = {
 		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		fontSize: 16,
 		fontWeight: '500',
-		color: '#rgb(77, 162, 255)'
+		color: '#rgb(87, 172, 255)'
 	},
 	textoBotonCancelar: {
 		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',

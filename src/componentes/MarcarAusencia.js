@@ -27,7 +27,7 @@ class MarcarAusencia extends Component {
 		headerStyle: {
 			marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 			backgroundColor: '#rgb(247, 247, 247)',
-			marginBottom: 8
+			marginBottom: Platform.OS === 'android' ? 8 : 0
 		},
 		headerRight: <View />
 	})
@@ -62,6 +62,7 @@ class MarcarAusencia extends Component {
 			if (snapshotEstudiante.val().datos &&
 				snapshotEstudiante.val().datos.ausencias &&
 				snapshotEstudiante.val().datos.ausencias[estudiante.seccion]) {
+				// si(tiene datos Y tiene ausencias Y tiene ausencias en esa materia);
 				const ausencias = snapshotEstudiante.val().datos.ausencias[estudiante.seccion];
 				if (!_.find(ausencias, (o) => {
 					return o.fecha === horario.fecha && o.hora === horario.hora;
@@ -71,11 +72,11 @@ class MarcarAusencia extends Component {
 					}
 					ausencias.push({
 						fecha: horario.fecha,
-						hora: horario.hora,
-						token: snapshotEstudiante.val().token
+						hora: horario.hora
 					});
 				}
-				firebase.database().ref(`/Usuarios/${estudiante.codigo}/datos/ausencias/${estudiante.seccion}`)
+				firebase.database()
+				.ref(`/Usuarios/${estudiante.codigo}/datos/ausencias/${estudiante.seccion}`)
 				.set(ausencias)
 				.catch((error) => console.log(error));
 			} else {
@@ -84,7 +85,8 @@ class MarcarAusencia extends Component {
 					fecha: horario.fecha,
 					hora: horario.hora
 				});
-				firebase.database().ref(`/Usuarios/${estudiante.codigo}/datos/ausencias/${estudiante.seccion}`)
+				firebase.database()
+				.ref(`/Usuarios/${estudiante.codigo}/datos/ausencias/${estudiante.seccion}`)
 				.set(ausencias)
 				.catch((error) => console.log(error));
 			}
@@ -96,6 +98,8 @@ class MarcarAusencia extends Component {
 	
 	async enviarPushNotification() {
 		const { estudiante } = this.props.navigation.state.params;
+		console.log(estudiante.token);
+		// Datos perdidos por expo para enviar el push notification
 		const push = {
 			header: {
 				'accept': 'application/json',
@@ -111,7 +115,7 @@ class MarcarAusencia extends Component {
 				detalles: estudiante.detalles
 			}
 		};
-		axios.post('https://exp.host/--/api/v2/push/send', push)
+		axios.post('https://exp.host/--/api/v2/push/send', push) // Con axios hacemos push al servidor de expo
 		.then(response => {
 			console.log(response);
 		})
@@ -187,16 +191,16 @@ class MarcarAusencia extends Component {
 			<View style={estilos.contenedorPrincipal}>
 				<View style={estilos.contenedorTexto}>
 					<Text style={estilos.texto}>
-						Clase:  {estudiante.seccion.substring(0, 9)}
+						Clase: {estudiante.seccion.substring(0, 9)}
 					</Text>
 					<Text style={estilos.texto}>
-						Fecha:  {horario.fecha}
+						Fecha: {horario.fecha}
 					</Text>
 					<Text style={estilos.texto}>
-						Hora:  {horario.hora}
+						Hora: {horario.hora}
 					</Text>
 					<Text style={estilos.texto}>
-						Ausencias:  {estudiante.numero}
+						Ausencias: {estudiante.numero}
 					</Text>
 				</View>
 				<View style={estilos.contenedorBoton}>

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {
 	Image,
-	View,
+	KeyboardAvoidingView,
+	View
 	TouchableOpacity,
 	Text, 
 	Platform
@@ -10,7 +11,7 @@ import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import firebase from 'firebase';
 import { Permissions, Notifications } from 'expo';
-import { Contenedor, Input, Boton, Spinner } from './reusables/';
+import { Input, Boton, Spinner } from './reusables/';
 import { enviarDatos } from '../acciones';
 // import Logo from '../assets/ico_uprb.png';
 // Quita el comentario en este import y coloca {Logo} dentro del Image para ver el ícono
@@ -102,7 +103,7 @@ class Login extends Component {
 
 	render() {
 		return (
-			<Contenedor>
+			<KeyboardAvoidingView style={estilos.contenedor}>
 				<View style={estilos.contenedorIcono}>
 					<Image
 						style={estilos.icono}
@@ -134,12 +135,20 @@ class Login extends Component {
 					<Text style={estilos.error}>{this.state.error}</Text>
 					{this.renderDelBoton()}
 				</View>
-			</Contenedor>
+			</KeyboardAvoidingView>
 		);
 	}
 }
 
 const estilos = {
+	contenedor: {
+		backgroundColor: '#fff',
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+		flexDirection: 'column',
+		marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
+	},
 	contenedorIcono: {
 		flex: 3,
 		justifyContent: 'center',

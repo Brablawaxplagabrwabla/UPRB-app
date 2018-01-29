@@ -5,8 +5,8 @@ const DetallesAusencia = ({ fecha, hora }) => {
 	return (
 		<View style={estilos.contenedorPrincipal}>
 			<View style={estilos.contenedorSec}>
-				<Text style={estilos.texto}>Fecha:</Text>
-				<Text style={estilos.texto}>Hora:</Text>
+				<Text style={estilos.textoTag}>Fecha:</Text>
+				<Text style={estilos.textoTag}>Hora:</Text>
 			</View>
 			<View style={estilos.contenedorSec2}>
 				<Text style={estilos.texto}>{fecha}</Text>
@@ -37,6 +37,12 @@ const estilos = {
 		fontSize: 18,
 		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
 		color: '#rgb(156, 159, 161)',
+		paddingBottom: 5
+	},
+	textoTag: {
+		fontSize: 18,
+		fontFamily: Platform.OS === 'android' ? 'Roboto' : 'Helvetica',
+		color: '#rgb(146, 149, 151)',
 		paddingBottom: 5
 	}
 };
