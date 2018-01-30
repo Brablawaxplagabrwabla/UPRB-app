@@ -305,7 +305,7 @@ const estilos = {
 		width: '80%',
 		backgroundColor: '#fff',
 		borderRadius: 15,
-		alignSelf: 'center'
+		alignSelf: 'center',
 		borderWidth: 0.5
 	},
 	contenedorTextoModal: {

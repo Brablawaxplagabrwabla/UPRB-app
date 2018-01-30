@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import {
 	Image,
 	KeyboardAvoidingView,
-	View
+	View,
 	TouchableOpacity,
 	Text, 
-	Platform
+	Platform,
+	StatusBar
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -103,7 +104,7 @@ class Login extends Component {
 
 	render() {
 		return (
-			<KeyboardAvoidingView style={estilos.contenedor}>
+			<KeyboardAvoidingView style={estilos.contenedor} behavior="padding">
 				<View style={estilos.contenedorIcono}>
 					<Image
 						style={estilos.icono}
@@ -155,12 +156,12 @@ const estilos = {
 		alignItems: 'center'
 	},
 	contenedorForm: {
-		flex: 3,
+		flex: 4,
 		alignSelf: 'stretch',
 		justifyContent: 'space-between'
 	},
 	contenedorBotones: {
-		flex: 4,
+		flex: 3,
 		alignItems: 'center',
 		marginTop: 5
 	},
